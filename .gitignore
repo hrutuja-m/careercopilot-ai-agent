@@ -3,6 +3,10 @@ backend/client_secret.json
 backend/.env
 backend/.venv/
 backend/.git-backup-before-root-repo/
-**/__pycache__/
+__pycache__/
 *.pyc
+.env
+client_secret.json
+token_gmail.json
+*.db-journal
 .DS_Store
