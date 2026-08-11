@@ -7,7 +7,9 @@ from googleapiclient.discovery import build
 
 
 SCOPES = [
-    "https://www.googleapis.com/auth/gmail.readonly"
+    "https://www.googleapis.com/auth/gmail.readonly",
+    "https://www.googleapis.com/auth/gmail.send",
+    "https://www.googleapis.com/auth/gmail.compose",
 ]
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -33,7 +35,7 @@ def get_gmail_service():
 
         flow = InstalledAppFlow.from_client_secrets_file(
             CLIENT_SECRET_FILE,
-            SCOPES
+            SCOPES,
         )
 
         creds = flow.run_local_server(port=0)

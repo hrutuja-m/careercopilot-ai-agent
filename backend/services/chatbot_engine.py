@@ -12,6 +12,9 @@ def format_task(task):
 
 
 def get_today_plan(tasks):
+    if not tasks:
+        return "No career tasks are available yet. Sync jobs or add opportunities first, then I can build a focused plan."
+
     top_tasks = tasks[:3]
 
     response = "Today, focus on these career actions:\n\n"
@@ -30,6 +33,9 @@ def get_today_plan(tasks):
 
 
 def get_best_match(tasks):
+    if not tasks:
+        return "No jobs are available yet, so I cannot choose a best match. Sync jobs or add opportunities first."
+
     best_task = max(tasks, key=lambda task: task["match_score"])
 
     return (
@@ -41,16 +47,24 @@ def get_best_match(tasks):
 
 
 def get_missing_skills_summary(tasks):
+    if not tasks:
+        return "No jobs are available yet, so there are no missing skills to summarize."
+
     response = "Here are missing skills by opportunity:\n\n"
+    found_missing_skills = False
 
     for task in tasks:
         missing = task.get("missing_skills", [])
 
         if missing:
+            found_missing_skills = True
             response += (
                 f"- Job ID {task['job_id']}: "
                 f"{', '.join(missing[:5])}\n"
             )
+
+    if not found_missing_skills:
+        return "No missing skills were found for the current jobs."
 
     response += (
         "\nUse this to update your resume keywords or decide what to learn next."
@@ -80,6 +94,9 @@ def get_follow_up_plan(tasks):
 
 
 def get_weekly_plan(tasks):
+    if not tasks:
+        return "No career tasks are available yet. Sync jobs or add opportunities first, then I can make a weekly plan."
+
     response = "Here is your career task plan for this week:\n\n"
 
     buckets = {
@@ -110,6 +127,9 @@ def get_weekly_plan(tasks):
 
 
 def explain_top_priority(tasks):
+    if not tasks:
+        return "No top priority is available yet because there are no jobs to rank."
+
     top_task = tasks[0]
 
     return (

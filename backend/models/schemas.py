@@ -23,3 +23,7 @@ class Job(BaseModel):
     deadline_days: int
     status: str
     user_interest: int
+
+
+class ApplicationStatusUpdate(BaseModel):
+    status: str

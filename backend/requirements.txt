@@ -9,3 +9,7 @@ google-api-python-client
 google-auth-httplib2
 google-auth-oauthlib
 beautifulsoup4
+streamlit
+httpx
+httpx2
+pytest

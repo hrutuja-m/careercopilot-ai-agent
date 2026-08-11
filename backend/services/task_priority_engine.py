@@ -1,10 +1,76 @@
+from datetime import date, datetime
+
 from services.job_matcher import calculate_match_score, get_missing_skills
 
 
-def assign_priority(match_score, deadline_days, user_interest, status):
-    status = status.lower()
+def _parse_date(value):
+    if not value:
+        return None
 
-    if status == "applied":
+    if isinstance(value, date):
+        return value
+
+    text = str(value).strip()
+    for fmt in ("%Y-%m-%d", "%B %d, %Y", "%b %d, %Y"):
+        try:
+            return datetime.strptime(text, fmt).date()
+        except ValueError:
+            pass
+
+    try:
+        return datetime.fromisoformat(text).date()
+    except ValueError:
+        return None
+
+
+def _deadline_days(job):
+    if job.get("deadline_days") is not None:
+        return int(job.get("deadline_days"))
+
+    deadline = _parse_date(job.get("deadline"))
+    if deadline:
+        return max((deadline - date.today()).days, 0)
+
+    return 30
+
+
+def _status(job):
+    return (
+        job.get("status")
+        or job.get("application_status")
+        or "saved"
+    )
+
+
+def _user_interest(job):
+    if job.get("user_interest") is not None:
+        return int(job.get("user_interest"))
+
+    priority_score = float(job.get("priority_score") or 0)
+    if priority_score >= 75:
+        return 5
+    if priority_score >= 50:
+        return 4
+    if priority_score >= 25:
+        return 3
+    return 2
+
+
+def _job_id(job, index):
+    return job.get("id") or job.get("job_id") or job.get("email_id") or index + 1
+
+
+def _required_skills(job):
+    skills = job.get("required_skills") or []
+    if isinstance(skills, str):
+        return [skill.strip() for skill in skills.split(",") if skill.strip()]
+    return skills
+
+
+def assign_priority(match_score, deadline_days, user_interest, status):
+    status = str(status or "saved").lower()
+
+    if status in {"applied", "follow up", "follow-up"}:
         return "Follow Up"
 
     if deadline_days <= 2 and match_score >= 70:
@@ -72,34 +138,44 @@ def suggest_action(priority, job_title, company, missing_skills):
 def generate_priority_tasks(resume_profile, jobs):
     tasks = []
 
-    for job in jobs:
+    for index, job in enumerate(jobs):
+        required_skills = _required_skills(job)
+        deadline_days = _deadline_days(job)
+        user_interest = _user_interest(job)
+        status = _status(job)
+
         match_score = calculate_match_score(
             resume_profile["skills"],
-            job["required_skills"],
+            required_skills,
         )
 
         missing_skills = get_missing_skills(
             resume_profile["skills"],
-            job["required_skills"],
+            required_skills,
         )
 
         priority = assign_priority(
             match_score,
-            job["deadline_days"],
-            job["user_interest"],
-            job["status"],
+            deadline_days,
+            user_interest,
+            status,
         )
+
+        title = job.get("title") or "Unknown role"
+        company = job.get("company") or "Unknown company"
 
         tasks.append(
             {
-                "job_id": job["id"],
-                "task_title": f"{priority}: {job['title']} at {job['company']}",
+                "job_id": _job_id(job, index),
+                "task_title": f"{priority}: {title} at {company}",
                 "priority": priority,
-                "reason": generate_reason(priority, match_score, job["deadline_days"], missing_skills),
-                "suggested_action": suggest_action(priority, job["title"], job["company"], missing_skills),
-                "deadline_days": job["deadline_days"],
+                "reason": generate_reason(priority, match_score, deadline_days, missing_skills),
+                "suggested_action": suggest_action(priority, title, company, missing_skills),
+                "deadline_days": deadline_days,
                 "match_score": match_score,
                 "missing_skills": missing_skills,
+                "source": job.get("source"),
+                "apply_url": job.get("apply_url"),
             }
         )
 
