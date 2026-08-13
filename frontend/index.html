@@ -1,0 +1,2015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CareerCopilot AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#232326;
+    --ink-soft:#54545B;
+    --muted:#7D7D85;
+    --panel:#FFFFFF;
+    --panel-line:#EEEEF0;
+    --sidebar-bg:#FBFAFA;
+    --pill-active:#1E1E21;
+    --coral:#F0653F;
+    --coral-soft:#FDE4DB;
+    --amber:#E8944B;
+    --amber-soft:#FBEBD9;
+    --violet:#8B7FE8;
+    --violet-soft:#E9E6FB;
+    --mint:#3FAE8F;
+    --mint-soft:#DEF3EC;
+    --radius-lg:22px;
+    --radius-md:16px;
+    --radius-sm:10px;
+    --font-mono:'IBM Plex Mono',monospace;
+    --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:20px; --sp-6:24px; --sp-7:32px;
+  }
+  [data-theme="dark"]{
+    --ink:#F7F4EA;
+    --ink-soft:#D8D6CD;
+    --muted:#A7A99F;
+    --panel:#171A1E;
+    --panel-line:#30343A;
+    --sidebar-bg:#101317;
+    --pill-active:#F5F5F3;
+    --coral:#FF8A68;
+    --amber:#F0B15F;
+    --violet:#B5AAFF;
+    --mint:#5BD0AD;
+    --coral-soft:#492820;
+    --amber-soft:#3E2F1C;
+    --violet-soft:#29284B;
+    --mint-soft:#16382F;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  html{height:100%;}
+  a{color:inherit;text-decoration:none;}
+  body{
+    font-family:'Inter',sans-serif;
+    color:var(--ink);
+    height:100vh;
+    overflow:hidden;
+    background:
+      radial-gradient(circle at 100% 100%, #F3A16B 0%, #F0C293 20%, transparent 46%),
+      radial-gradient(circle at 0% 0%, #EDEEF2 0%, transparent 55%),
+      linear-gradient(135deg, #EDEEF2 0%, #F1DCDD 45%, #F2A87E 100%);
+    padding:20px;
+  }
+  [data-theme="dark"] body{
+    background:
+      radial-gradient(circle at 100% 100%, rgba(240,101,63,.25) 0%, transparent 38%),
+      radial-gradient(circle at 0% 0%, rgba(139,127,232,.22) 0%, transparent 45%),
+      linear-gradient(135deg, #0E1116 0%, #151922 55%, #231A16 100%);
+  }
+  [data-theme="dark"] .brand-mark,
+  [data-theme="dark"] .sync-btn,
+  [data-theme="dark"] .composer-send,
+  [data-theme="dark"] .chat-send,
+  [data-theme="dark"] .new-chat-btn,
+  [data-theme="dark"] .btn-primary{background:#F4EFE5;color:#12151A;border-color:#F4EFE5;}
+  [data-theme="dark"] .brand-mark svg path,
+  [data-theme="dark"] .sync-btn svg path,
+  [data-theme="dark"] .composer-send svg path,
+  [data-theme="dark"] .chat-send svg path{stroke:#12151A;}
+  [data-theme="dark"] .nav-item:hover,
+  [data-theme="dark"] .profile-card,
+  [data-theme="dark"] thead th,
+  [data-theme="dark"] tbody tr:hover,
+  [data-theme="dark"] .msg-bot,
+  [data-theme="dark"] .suggestion-chip,
+  [data-theme="dark"] .chat-input,
+  [data-theme="dark"] .chat-job-card,
+  [data-theme="dark"] .chat-link,
+  [data-theme="dark"] .modal-action-box,
+  [data-theme="dark"] .search-box,
+  [data-theme="dark"] .empty-card .empty-code{background:#20242B;}
+  [data-theme="dark"] .modal-card,
+  [data-theme="dark"] .offline-card{background:var(--panel);}
+  [data-theme="dark"] .nav-item.active,
+  [data-theme="dark"] .chip.on{background:#F4EFE5;color:#101317;border-color:#F4EFE5;}
+  [data-theme="dark"] .page-title,
+  [data-theme="dark"] .hero-title,
+  [data-theme="dark"] .profile-name-lg,
+  [data-theme="dark"] .company,
+  [data-theme="dark"] .info-title,
+  [data-theme="dark"] .action-title,
+  [data-theme="dark"] .list-title,
+  [data-theme="dark"] .activity-title{color:var(--ink);}
+  [data-theme="dark"] .page-sub,
+  [data-theme="dark"] .hero-sub,
+  [data-theme="dark"] .role,
+  [data-theme="dark"] .modal-desc,
+  [data-theme="dark"] .info-sub,
+  [data-theme="dark"] .action-desc,
+  [data-theme="dark"] .activity-desc,
+  [data-theme="dark"] .activity-time,
+  [data-theme="dark"] .list-desc,
+  [data-theme="dark"] .deadline,
+  [data-theme="dark"] .tracker-search input,
+  [data-theme="dark"] .search-box input{color:var(--ink-soft);}
+  [data-theme="dark"] .msg-user{background:#F4EFE5;color:#12151A;}
+  [data-theme="dark"] .msg-bot,
+  [data-theme="dark"] .chat-card,
+  [data-theme="dark"] .chat-job-card{color:var(--ink);}
+  [data-theme="dark"] .chat-input::placeholder,
+  [data-theme="dark"] .tracker-search input::placeholder,
+  [data-theme="dark"] .search-box input::placeholder{color:#8F949D;}
+  [data-theme="dark"] .chat-link{color:var(--ink-soft);border-color:#30343A;}
+  [data-theme="dark"] .row-apply{background:#F4EFE5;border-color:#F4EFE5;color:#12151A;}
+  [data-theme="dark"] .row-apply:hover{background:#FFFFFF;border-color:#FFFFFF;color:#12151A;}
+  [data-theme="dark"] .row-open,
+  [data-theme="dark"] .row-details,
+  [data-theme="dark"] .icon-detail,
+  [data-theme="dark"] .detail-card{background:#171A1E;color:#D8D6CD;border-color:#30343A;}
+  [data-theme="dark"] .row-details:hover,
+  [data-theme="dark"] .icon-detail:hover,
+  [data-theme="dark"] .detail-card:hover{background:#242A32;color:#F7F4EA;border-color:#4A5059;}
+  [data-theme="dark"] .icon-detail-primary{background:#F4EFE5;color:#12151A;border-color:#F4EFE5;}
+  [data-theme="dark"] .icon-detail-primary:hover{background:#FFFFFF;color:#12151A;border-color:#FFFFFF;}
+  [data-theme="dark"] .row-done{background:#123C32;color:#8FE7C8;border-color:transparent;}
+  .nav-group, .main, .activity-list{
+    scrollbar-width:thin;
+    scrollbar-color:#D8D5D0 transparent;
+  }
+  .nav-group::-webkit-scrollbar, .main::-webkit-scrollbar, .activity-list::-webkit-scrollbar{ width:6px; }
+  .nav-group::-webkit-scrollbar-track, .main::-webkit-scrollbar-track, .activity-list::-webkit-scrollbar-track{ background:transparent; }
+  .nav-group::-webkit-scrollbar-thumb, .main::-webkit-scrollbar-thumb, .activity-list::-webkit-scrollbar-thumb{ background:#D8D5D0; border-radius:10px; }
+  .nav-group::-webkit-scrollbar-thumb:hover, .main::-webkit-scrollbar-thumb:hover, .activity-list::-webkit-scrollbar-thumb:hover{ background:#C3BFB8; }
+
+  .shell{ display:flex; gap:20px; max-width:1360px; height:calc(100vh - 40px); margin:0 auto; }
+  .sidebar{width:224px;flex-shrink:0;height:100%;}
+  .main{flex:1;min-width:0;height:100%;overflow-y:auto;}
+  .side-panel{width:300px;flex-shrink:0;height:100%;}
+
+  .sidebar{
+    background:var(--sidebar-bg); border-radius:var(--radius-lg); padding:var(--sp-5) var(--sp-3);
+    display:flex; flex-direction:column; gap:var(--sp-6);
+    box-shadow:0 1px 2px rgba(0,0,0,0.02);
+  }
+  .brand{display:flex;align-items:center;gap:var(--sp-2);padding:2px var(--sp-2);flex-shrink:0;}
+  .brand-mark{width:26px;height:26px;border-radius:8px;background:var(--ink);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .brand-mark svg{width:14px;height:14px;}
+  .brand-name{font-weight:700;font-size:15px;letter-spacing:-0.01em;}
+
+  .nav-group{ display:flex;flex-direction:column;gap:2px; overflow-y:auto;flex:1;min-height:0; padding-right:2px; margin-right:-2px; }
+  .nav-label{ font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.07em; color:var(--muted);padding:0 var(--sp-2);margin:var(--sp-3) 0 var(--sp-2); }
+  .nav-item{
+    display:flex;align-items:center;gap:var(--sp-2); padding:9px var(--sp-2);border-radius:10px;
+    font-size:13.5px;font-weight:500;color:var(--ink-soft);
+    cursor:pointer;border:none;background:none;width:100%;text-align:left;
+    transition:background .15s ease,color .15s ease; flex-shrink:0;
+  }
+  .nav-item svg{width:17px;height:17px;flex-shrink:0;stroke-width:1.75;}
+  .nav-item:hover{background:#F1F1F3;}
+  .nav-item.active{background:var(--pill-active);color:#fff;}
+  .nav-item:focus-visible{outline:2px solid var(--violet);outline-offset:1px;}
+  .nav-badge{ margin-left:auto;font-size:10.5px;font-weight:700; background:var(--coral);color:#fff; width:17px;height:17px;border-radius:50%; display:flex;align-items:center;justify-content:center; flex-shrink:0; }
+  .nav-badge.hidden{display:none;}
+  .nav-item.active .nav-badge{background:#fff;color:var(--ink);}
+
+  .profile-card{
+    margin-top:auto; flex-shrink:0; background:#F1F1F3; border-radius:14px; padding:12px;
+    display:flex;flex-direction:column;gap:var(--sp-2); cursor:pointer; border:1px solid transparent; transition:border-color .15s ease;
+  }
+  .profile-card:hover{border-color:var(--panel-line);}
+  .profile-top{display:flex;align-items:center;gap:var(--sp-2);}
+  .profile-top > div{min-width:0;}
+  .avatar{ width:34px;height:34px;border-radius:50%; background:linear-gradient(135deg,var(--coral),var(--amber)); display:flex;align-items:center;justify-content:center; color:#fff;font-weight:700;font-size:12.5px;flex-shrink:0; }
+  .profile-name{font-size:12.5px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .profile-sub{font-size:11px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .sync-btn{
+    background:var(--ink);color:#fff;border:none; padding:9px;border-radius:10px;font-size:12px;font-weight:600;
+    display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer; transition:background .15s ease;
+  }
+  .sync-btn:hover{background:#000;}
+  .sync-btn:disabled{opacity:.6;cursor:default;}
+  .sync-btn svg{width:13px;height:13px;}
+  .sync-btn svg.spin{animation:spin 0.9s linear infinite;}
+  @keyframes spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+
+  .view{display:none;}
+  .view.active{display:block;animation:fade .2s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+  #view-home.active{ min-height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+  .hero{ display:flex;flex-direction:column;align-items:center; text-align:center;padding:var(--sp-7) var(--sp-5); width:100%; }
+  .hero-mark{width:56px;height:56px;margin-bottom:var(--sp-4);opacity:0.9;}
+  .hero-title{font-size:28px;font-weight:800;letter-spacing:-0.02em;margin:0 0 var(--sp-1);}
+  .hero-sub{font-size:14px;color:var(--ink-soft);margin:0 0 var(--sp-5);}
+
+  .focus-card{ width:100%;max-width:640px; background:var(--panel);border-radius:var(--radius-md); padding:var(--sp-4) var(--sp-5); margin-bottom:var(--sp-5); box-shadow:0 6px 18px rgba(80,60,50,0.06); display:flex; align-items:center; gap:var(--sp-4); text-align:left; }
+  .focus-card .focus-label{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:3px;}
+  .focus-card .focus-title{font-size:14.5px;font-weight:700;}
+  .focus-card .focus-reason{font-size:12px;color:var(--ink-soft);margin-top:2px;}
+  .focus-card .btn{flex-shrink:0;}
+
+  .action-cards{ display:flex;gap:var(--sp-4);width:100%;max-width:640px;margin-bottom:var(--sp-4); }
+  .action-card{ flex:1;min-width:0;
+    background:var(--panel); border-radius:var(--radius-md); padding:var(--sp-4);text-align:left;
+    box-shadow:0 6px 18px rgba(80,60,50,0.06); cursor:pointer; border:1px solid transparent;
+    transition:border-color .15s ease, transform .15s ease, box-shadow .15s ease; font:inherit;
+  }
+  .action-card:hover{ border-color:var(--panel-line); transform:translateY(-2px); box-shadow:0 10px 24px rgba(80,60,50,0.09); }
+  .action-icon{ width:32px;height:32px;border-radius:9px; display:flex;align-items:center;justify-content:center;margin-bottom:var(--sp-3); }
+  .action-icon svg{width:16px;height:16px;stroke-width:1.8;}
+  .ai-1{background:var(--coral-soft);color:var(--coral);}
+  .ai-2{background:var(--amber-soft);color:var(--amber);}
+  .ai-3{background:var(--violet-soft);color:var(--violet);}
+  .action-title{font-size:13.5px;font-weight:700;margin-bottom:var(--sp-1);}
+  .action-desc{font-size:11.5px;color:var(--muted);line-height:1.45;}
+
+  .composer{ width:100%;max-width:640px; background:var(--panel); border-radius:18px; padding:var(--sp-4); box-shadow:0 6px 18px rgba(80,60,50,0.07); }
+  .composer-input{ border:none;outline:none;width:100%; font-family:inherit;font-size:13.5px;color:var(--ink-soft); background:transparent;padding:0 0 var(--sp-3); }
+  .composer-row{display:flex;align-items:center;gap:var(--sp-4);}
+  .composer-actions{display:flex;align-items:center;gap:var(--sp-4);flex:1;}
+  .composer-btn{ display:flex;align-items:center;gap:6px; font-size:12px;font-weight:500;color:var(--muted); background:none;border:none;cursor:pointer; transition:color .15s ease; font-family:inherit; }
+  .composer-btn:hover{color:var(--ink-soft);}
+  .composer-btn svg{width:15px;height:15px;stroke-width:1.8;}
+  .composer-send{ width:34px;height:34px;border-radius:9px;background:var(--ink); display:flex;align-items:center;justify-content:center;flex-shrink:0;border:none;cursor:pointer; }
+  .composer-send svg{width:14px;height:14px;}
+  .composer-send:disabled{opacity:.5;cursor:default;}
+
+  .page-wrap{padding:var(--sp-2) var(--sp-1) var(--sp-6);}
+  .page-header{ display:flex;justify-content:space-between;align-items:flex-start; margin-bottom:var(--sp-5); gap:var(--sp-4); flex-wrap:wrap; }
+  .page-title{font-size:24px;font-weight:800;letter-spacing:-0.01em;margin:0 0 4px;}
+  .page-sub{color:var(--ink-soft);font-size:13px;margin:0;}
+  .gmail-chip{
+    display:flex;align-items:center;gap:7px; background:var(--panel); border:1px solid var(--panel-line);
+    padding:7px 13px 7px 10px;border-radius:20px; font-size:12.5px;font-weight:500;color:var(--ink-soft); white-space:nowrap;
+  }
+  .dot-live{width:7px;height:7px;border-radius:50%;background:var(--mint);flex-shrink:0;box-shadow:0 0 0 3px var(--mint-soft);}
+  .dot-off{width:7px;height:7px;border-radius:50%;background:#C7C5C0;flex-shrink:0;}
+
+  .toolbar{display:flex;justify-content:space-between;align-items:center;gap:var(--sp-3);margin-bottom:var(--sp-4);flex-wrap:wrap;}
+  .filters{display:flex;gap:var(--sp-2);flex-wrap:wrap;}
+  .chip{ font-size:12.5px;font-weight:500; padding:6px 13px;border-radius:20px; border:1px solid var(--panel-line); background:var(--panel); color:var(--ink-soft); cursor:pointer; transition:background .15s ease,color .15s ease; font-family:inherit; }
+  .chip.on{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .tracker-search{ display:flex;align-items:center;gap:8px; background:var(--panel);border:1px solid var(--panel-line); border-radius:20px;padding:8px 14px;width:220px; }
+  .tracker-search svg{width:14px;height:14px;stroke-width:1.8;color:var(--muted);flex-shrink:0;}
+  .tracker-search input{border:none;outline:none;background:none;font-size:12.5px;width:100%;font-family:inherit;color:var(--ink-soft);}
+
+  .table-card{background:var(--panel);border-radius:var(--radius-lg);overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,0.02);}
+  table{width:100%;border-collapse:collapse;table-layout:fixed;}
+  thead th{ text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:.07em; color:var(--muted);font-weight:700; padding:14px var(--sp-4);border-bottom:1px solid var(--panel-line); background:#FBFAF9; }
+  tbody td{padding:15px var(--sp-4);border-bottom:1px solid var(--panel-line);font-size:13.5px;vertical-align:middle;}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr{transition:background .12s ease;}
+  tbody tr:hover{background:#FCFBF9;}
+  tbody tr.hidden-row{display:none;}
+  tbody tr.job-row{cursor:default;}
+  .company{font-weight:700;line-height:1.25;}
+  .role{color:var(--ink-soft);font-family:var(--font-mono);font-size:12.5px;line-height:1.35;}
+  .cell-text{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+  .new-badge{ font-family:var(--font-mono);font-size:9px;font-weight:600; background:var(--coral-soft);color:#B84A2E; padding:2px 6px;border-radius:4px; margin-left:7px;vertical-align:middle; }
+  .deadline{display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:12px;color:var(--ink-soft);line-height:1.2;}
+  .deadline-copy{display:flex;flex-direction:column;gap:2px;min-width:0;}
+  .deadline-main{white-space:nowrap;font-weight:600;color:var(--ink-soft);}
+  .deadline-sub{font-size:10.5px;color:var(--muted);white-space:nowrap;}
+  .urg-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+  .urg-overdue{background:#D94D35;}
+  .urg-soon{background:var(--coral);}
+  .urg-week{background:var(--amber);}
+  .urg-later{background:#B9B9BF;}
+  .status-tag{font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:20px;display:inline-block;white-space:nowrap;}
+  .st-applied{background:var(--mint-soft);color:#1E6E5B;}
+  .st-not{background:#EFEDE8;color:var(--muted);}
+  .st-interview{background:var(--amber-soft);color:#985F1D;}
+  .st-rejected{background:var(--coral-soft);color:#B84A2E;}
+  .st-event{background:var(--violet-soft);color:#5C4FC7;}
+  .priority-badge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;display:inline-block;white-space:nowrap;}
+  .pr-donow{background:var(--coral-soft);color:#B84A2E;}
+  .pr-dotoday{background:var(--amber-soft);color:#985F1D;}
+  .pr-followup{background:var(--mint-soft);color:#1E6E5B;}
+  .pr-highvalue{background:var(--violet-soft);color:#5C4FC7;}
+  .pr-week{background:#FBEBD9;color:#985F1D;}
+  .pr-tailor,.pr-low{background:#EFEDE8;color:var(--muted);}
+  .pr-interview{background:var(--violet-soft);color:#5C4FC7;}
+  .pr-closed{background:#EFEDE8;color:var(--muted);}
+
+  /* Native <select> styled to look like the status pill it replaces */
+  .status-select{font-size:11.5px;font-weight:700;padding:4px 24px 4px 10px;border-radius:20px;border:none;cursor:pointer;font-family:inherit;-webkit-appearance:none;-moz-appearance:none;appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'><path d='M6 9l6 6 6-6' stroke='%237D7D85' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>");background-repeat:no-repeat;background-position:right 6px center;background-size:12px;}
+  .status-select.st-applied{background-color:var(--mint-soft);color:#1E6E5B;}
+  .status-select.st-not{background-color:#EFEDE8;color:var(--muted);}
+  .status-select.st-interview{background-color:var(--amber-soft);color:#985F1D;}
+  .status-select.st-rejected{background-color:var(--coral-soft);color:#B84A2E;}
+  [data-theme="dark"] .st-applied,
+  [data-theme="dark"] .status-select.st-applied,
+  [data-theme="dark"] .pr-followup,
+  [data-theme="dark"] .status-connected{color:#8FE7C8;}
+  [data-theme="dark"] .st-not,
+  [data-theme="dark"] .status-select.st-not,
+  [data-theme="dark"] .pr-tailor,
+  [data-theme="dark"] .pr-low,
+  [data-theme="dark"] .pr-closed,
+  [data-theme="dark"] .status-off{background:#2A2E35;color:#BEC2C9;}
+  [data-theme="dark"] .st-interview,
+  [data-theme="dark"] .status-select.st-interview,
+  [data-theme="dark"] .pr-dotoday,
+  [data-theme="dark"] .pr-week{color:#FFD08A;}
+  [data-theme="dark"] .st-rejected,
+  [data-theme="dark"] .status-select.st-rejected,
+  [data-theme="dark"] .pr-donow,
+  [data-theme="dark"] .status-error{color:#FFAA92;}
+  [data-theme="dark"] .pr-highvalue,
+  [data-theme="dark"] .pr-interview,
+  [data-theme="dark"] .st-event{color:#D2CCFF;}
+  [data-theme="dark"] .row-link:hover,
+  [data-theme="dark"] .btn:hover,
+  [data-theme="dark"] .btn-small:hover{background:#242A32;}
+
+  .toast-undo{background:none;border:none;color:#DDEBE3;text-decoration:underline;font-weight:700;cursor:pointer;font-size:12.5px;padding:0;margin-left:8px;font-family:inherit;}
+  .row-link{ height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center; color:var(--muted);border:1px solid var(--panel-line);transition:all .15s ease;background:none;cursor:pointer; }
+  .row-link:hover{color:var(--ink);border-color:var(--ink);background:#F7F7F5;}
+  .row-link svg{width:13px;height:13px;stroke-width:1.8;}
+  .row-actions{display:flex;gap:6px;justify-content:flex-end;min-height:30px;flex-wrap:nowrap;}
+  .row-apply{width:auto;min-width:58px;padding:0 10px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;background:var(--ink);border-color:var(--ink);color:#fff;}
+  .row-apply:hover{background:#000;color:#fff;border-color:#000;}
+  .row-open{width:auto;min-width:54px;padding:0 9px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;background:#FBFAF9;color:var(--muted);}
+  .row-details{flex-shrink:0;}
+  .row-done{width:auto;min-width:62px;padding:0 9px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;background:var(--mint-soft);border-color:transparent;color:#1E6E5B;cursor:default;}
+  .row-apply-empty{display:flex;width:58px;height:30px;opacity:.55;cursor:default;}
+  .icon-detail{width:30px;height:30px;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--panel-line);background:var(--panel);color:var(--ink-soft);cursor:pointer;transition:all .15s ease;flex-shrink:0;font-family:inherit;}
+  .icon-detail:hover{border-color:var(--ink);color:var(--ink);background:#F7F7F5;}
+  .icon-detail:focus-visible{outline:2px solid var(--violet);outline-offset:2px;}
+  .icon-detail svg{width:15px;height:15px;stroke-width:2;}
+  .icon-detail-primary{background:var(--ink);color:#fff;border-color:var(--ink);width:34px;height:34px;}
+  .icon-detail-primary:hover{background:#000;color:#fff;border-color:#000;}
+  .table-empty{padding:40px 20px;text-align:center;color:var(--muted);font-size:13px;}
+
+  .empty-card{ background:var(--panel);border-radius:var(--radius-lg);padding:var(--sp-7) var(--sp-5); text-align:center; box-shadow:0 1px 2px rgba(0,0,0,0.02); }
+  .empty-card .empty-icon{width:44px;height:44px;border-radius:12px;background:var(--violet-soft);color:#5C4FC7;display:flex;align-items:center;justify-content:center;margin:0 auto var(--sp-4);}
+  .empty-card .empty-icon svg{width:20px;height:20px;stroke-width:1.8;}
+  .empty-card .empty-title{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .empty-card .empty-text{font-size:12.5px;color:var(--muted);max-width:420px;margin:0 auto;line-height:1.55;}
+  .empty-card .empty-code{ display:inline-block;margin-top:var(--sp-4); font-family:var(--font-mono);font-size:11.5px; background:#FBFAF9;border:1px solid var(--panel-line); padding:9px 13px;border-radius:8px;color:var(--ink-soft); }
+
+  .btn{ font-size:12.5px;font-weight:600; padding:8px 15px;border-radius:9px; border:1px solid var(--panel-line); background:var(--panel); cursor:pointer; font-family:inherit; transition:all .15s ease; }
+  .btn:hover{border-color:var(--ink);}
+  .btn:disabled{opacity:.55;cursor:default;}
+  .btn-primary{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .btn-primary:hover{background:#000;}
+  .btn-ghost{background:transparent;color:var(--muted);border-color:transparent;}
+  .btn-ghost:hover{color:var(--coral);border-color:transparent;}
+
+  .chat-shell{ background:var(--panel);border-radius:var(--radius-lg); display:flex;flex-direction:column;height:100%;min-height:520px; box-shadow:0 1px 2px rgba(0,0,0,0.02); }
+  .chat-log{flex:1;overflow-y:auto;padding:var(--sp-5) var(--sp-6);display:flex;flex-direction:column;gap:var(--sp-4);}
+  .msg{max-width:74%;font-size:13.5px;line-height:1.55;padding:11px 15px;border-radius:14px;white-space:pre-wrap;}
+  .msg-user{align-self:flex-end;background:var(--ink);color:#fff;border-bottom-right-radius:4px;}
+  .msg-bot{align-self:flex-start;background:#FBFAF9;border:1px solid var(--panel-line);border-bottom-left-radius:4px;}
+  .msg-bot.error{background:var(--coral-soft);border-color:transparent;color:#B84A2E;}
+  .msg-bot .cite{ display:inline-flex;align-items:center;gap:5px; font-family:var(--font-mono);font-size:11px; background:var(--mint-soft);color:#1E6E5B; padding:2px 7px;border-radius:5px;margin:0 2px;white-space:nowrap; }
+  .typing-dots{display:inline-flex;gap:3px;align-items:center;}
+  .typing-dots span{width:5px;height:5px;border-radius:50%;background:var(--muted);animation:blink 1.2s infinite ease-in-out;}
+  .typing-dots span:nth-child(2){animation-delay:.2s;}
+  .typing-dots span:nth-child(3){animation-delay:.4s;}
+  @keyframes blink{0%,80%,100%{opacity:.25;}40%{opacity:1;}}
+  .chat-suggestions{display:flex;flex-wrap:wrap;gap:7px;padding:0 var(--sp-4) var(--sp-3);}
+  .suggestion-chip{font-size:11.5px;font-weight:500;padding:6px 12px;border-radius:20px;border:1px solid var(--panel-line);background:#FBFAF9;color:var(--ink-soft);cursor:pointer;font-family:inherit;transition:all .15s ease;}
+  .suggestion-chip:hover{border-color:var(--ink);color:var(--ink);}
+  .chat-input-row{display:flex;gap:10px;padding:var(--sp-4);border-top:1px solid var(--panel-line);}
+  .chat-input{flex:1;border:1px solid var(--panel-line);border-radius:10px;padding:10px 14px;font-size:13.5px;font-family:inherit;background:#FBFAF9;color:var(--ink-soft);}
+  .chat-send{width:38px;height:38px;border-radius:10px;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;border:none;flex-shrink:0;cursor:pointer;}
+  .chat-send:disabled{opacity:.5;cursor:default;}
+
+  .profile-header-card{ background:var(--panel);border-radius:var(--radius-lg);padding:var(--sp-5); display:flex;align-items:center;gap:var(--sp-4); box-shadow:0 1px 2px rgba(0,0,0,0.02); margin-bottom:var(--sp-4); }
+  .avatar-lg{ width:64px;height:64px;border-radius:50%;flex-shrink:0; background:linear-gradient(135deg,var(--coral),var(--amber)); display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:20px; }
+  .profile-name-lg{font-size:18px;font-weight:800;}
+  .profile-email{font-size:13px;color:var(--muted);margin-top:2px;}
+  .profile-bio{font-size:12.5px;color:var(--ink-soft);margin-top:6px;}
+  .profile-header-card .btn{margin-left:auto;flex-shrink:0;}
+
+  .stats-row{display:flex;gap:var(--sp-4);margin-bottom:var(--sp-4);}
+  .stat-card{flex:1;background:var(--panel);border-radius:var(--radius-md);padding:var(--sp-4);box-shadow:0 1px 2px rgba(0,0,0,0.02);}
+  .stat-value{font-size:24px;font-weight:800;margin-bottom:2px;}
+  .stat-label{font-size:12px;color:var(--muted);}
+
+  .info-card{background:var(--panel);border-radius:var(--radius-lg);padding:var(--sp-5);box-shadow:0 1px 2px rgba(0,0,0,0.02);margin-bottom:var(--sp-4);scroll-margin-top:20px;transition:box-shadow .5s ease;}
+  .info-card.flash{box-shadow:0 0 0 3px var(--violet);}
+  .info-card-title{font-size:14px;font-weight:700;margin-bottom:var(--sp-4);}
+  .info-row{display:flex;align-items:center;gap:var(--sp-3);padding:var(--sp-3) 0;border-bottom:1px solid var(--panel-line);}
+  .info-row:last-child{border-bottom:none;padding-bottom:0;}
+  .info-row:first-child{padding-top:0;}
+  .info-icon-circle{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .info-icon-circle svg{width:16px;height:16px;stroke-width:1.8;}
+  .info-left{flex:1;min-width:0;}
+  .info-title{font-size:13px;font-weight:600;}
+  .info-sub{font-size:11.5px;color:var(--muted);margin-top:1px;}
+  .status-pill{font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;flex-shrink:0;}
+  .status-connected{background:var(--mint-soft);color:#1E6E5B;}
+  .status-off{background:#EFEDE8;color:var(--muted);}
+  .status-error{background:var(--coral-soft);color:#B84A2E;}
+  .btn-small{font-size:11.5px;font-weight:600;padding:6px 12px;border-radius:8px;border:1px solid var(--panel-line);background:var(--panel);cursor:pointer;flex-shrink:0;font-family:inherit;}
+  .btn-small:hover{border-color:var(--ink);}
+  .btn-small:disabled{opacity:.55;cursor:default;}
+
+  .skill-chip-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:var(--sp-3);}
+  .skill-chip{font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;background:var(--violet-soft);color:#5C4FC7;}
+  [data-theme="dark"] .skill-chip{color:#C7C1FF;}
+
+  .theme-toggle{display:flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--panel-line);border-radius:20px;padding:7px 11px;font-size:12px;font-weight:700;color:var(--ink-soft);cursor:pointer;font-family:inherit;}
+  .theme-toggle svg{width:14px;height:14px;stroke-width:1.9;}
+  .sidebar-theme{width:100%;justify-content:flex-start;border-radius:10px;background:none;border:none;padding:9px var(--sp-2);font-size:13.5px;font-weight:500;}
+  .sidebar-theme:hover{background:#F1F1F3;color:var(--ink-soft);}
+  [data-theme="dark"] .sidebar-theme{background:none;color:var(--ink-soft);}
+  [data-theme="dark"] .sidebar-theme:hover{background:#20242B;color:var(--ink);}
+
+  .upload-zone{border:1.5px dashed var(--panel-line);border-radius:14px;padding:18px;text-align:center;margin-top:var(--sp-4);background:#FBFAF9;transition:border-color .15s ease, background .15s ease;}
+  .upload-zone.dragging{border-color:var(--violet);background:var(--violet-soft);}
+  [data-theme="dark"] .upload-zone{background:#20242B;}
+  .upload-title{font-size:13px;font-weight:700;margin-bottom:4px;}
+  .upload-sub{font-size:11.5px;color:var(--muted);line-height:1.5;}
+  .upload-actions{display:flex;justify-content:center;gap:8px;margin-top:12px;flex-wrap:wrap;}
+  .resume-file-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:var(--sp-3);}
+  .resume-file-pill{font-size:11.5px;font-weight:700;color:var(--ink-soft);background:#F7F5F1;border:1px solid var(--panel-line);border-radius:8px;padding:6px 9px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  [data-theme="dark"] .resume-file-pill{background:#20242B;}
+  .hidden-file{display:none;}
+
+  .goal-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-4);align-items:start;}
+  .goal-control{display:flex;align-items:center;gap:8px;margin-top:var(--sp-3);}
+  .goal-input{width:74px;border:1px solid var(--panel-line);border-radius:9px;padding:8px 10px;background:var(--panel);color:var(--ink);font-family:inherit;font-weight:700;}
+  .progress-grid{display:grid;grid-template-columns:repeat(14, 1fr);gap:5px;margin-top:var(--sp-3);}
+  .progress-cell{aspect-ratio:1;border-radius:4px;background:#ECEAE5;border:1px solid var(--panel-line);}
+  .progress-l0{background:#ECEAE5;}
+  .progress-l1{background:#CDEBDD;}
+  .progress-l2{background:#8FD9C4;}
+  .progress-l3{background:#3FAE8F;}
+  .progress-l4{background:#1E6E5B;}
+  [data-theme="dark"] .progress-l0{background:#252A32;}
+  .progress-meta{font-size:11.5px;color:var(--muted);margin-top:8px;}
+
+  .chat-card{display:flex;flex-direction:column;gap:10px;white-space:normal;}
+  .chat-section-title{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);}
+  .chat-job-card{border:1px solid var(--panel-line);border-radius:10px;padding:10px;background:var(--panel);}
+  .chat-job-title{font-weight:800;font-size:13px;margin-bottom:2px;}
+  .chat-job-meta{font-size:11.5px;color:var(--muted);margin-bottom:8px;}
+  .chat-job-actions{display:flex;gap:8px;flex-wrap:wrap;}
+  .chat-link{font-size:11.5px;font-weight:700;padding:6px 9px;border-radius:8px;border:1px solid var(--panel-line);background:#FBFAF9;color:var(--ink-soft);}
+  [data-theme="dark"] .chat-link{background:#20242B;}
+  .chat-plan-day{border-left:3px solid var(--mint);padding:6px 0 8px 10px;}
+  .chat-plan-date{font-size:12px;font-weight:800;}
+  .chat-plan-actions{font-size:12px;color:var(--ink-soft);margin-top:4px;}
+
+  .toggle-row{display:flex;align-items:center;justify-content:space-between;padding:var(--sp-3) 0;border-bottom:1px solid var(--panel-line);}
+  .toggle-row:last-child{border-bottom:none;padding-bottom:0;}
+  .toggle-row:first-child{padding-top:0;}
+  .toggle-text-title{font-size:13px;font-weight:600;}
+  .toggle-text-sub{font-size:11.5px;color:var(--muted);margin-top:1px;}
+  .switch{position:relative;display:inline-block;width:38px;height:22px;flex-shrink:0;}
+  .switch input{opacity:0;width:0;height:0;}
+  .slider{position:absolute;inset:0;background:#DEDCD6;border-radius:22px;cursor:pointer;transition:background .15s ease;}
+  .slider:before{content:"";position:absolute;width:16px;height:16px;left:3px;top:3px;background:#fff;border-radius:50%;transition:transform .15s ease;}
+  .switch input:checked + .slider{background:var(--mint);}
+  .switch input:checked + .slider:before{transform:translateX(16px);}
+
+  .list-card{background:var(--panel);border-radius:var(--radius-lg);padding:var(--sp-5);box-shadow:0 1px 2px rgba(0,0,0,0.02);}
+  .list-item{display:flex;gap:var(--sp-3);padding:14px 0;border-bottom:1px solid var(--panel-line);cursor:pointer;background:none;border-left:none;border-right:none;border-top:none;width:100%;text-align:left;font-family:inherit;}
+  .list-item:last-child{border-bottom:none;padding-bottom:0;}
+  .list-item:first-child{padding-top:0;}
+  .list-thumb{width:40px;height:40px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;}
+  .list-body{flex:1;min-width:0;}
+  .list-title{font-size:13px;font-weight:700;margin-bottom:3px;line-height:1.3;}
+  .list-desc{font-size:11.5px;color:var(--muted);line-height:1.45;}
+  .list-time{font-size:10.5px;color:var(--muted);flex-shrink:0;align-self:center;}
+  .list-actions{display:flex;align-items:center;gap:6px;margin-left:auto;flex-shrink:0;}
+  .detail-card{width:30px;height:30px;border:1px solid var(--panel-line);background:var(--panel);color:var(--ink-soft);border-radius:8px;padding:0;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;font-family:inherit;white-space:nowrap;flex-shrink:0;}
+  .detail-card:hover{border-color:var(--ink);color:var(--ink);background:#F7F7F5;}
+  .detail-card svg{width:15px;height:15px;stroke-width:2;}
+
+  .digest-banner{ background:var(--panel);border-radius:var(--radius-lg);padding:var(--sp-5); display:flex;align-items:center;gap:var(--sp-4);margin-bottom:var(--sp-4); box-shadow:0 1px 2px rgba(0,0,0,0.02); }
+  .digest-icon{width:44px;height:44px;border-radius:12px;background:var(--violet-soft);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .digest-icon svg{width:20px;height:20px;color:#5C4FC7;stroke-width:1.8;}
+
+  .side-panel{ background:var(--panel);border-radius:var(--radius-lg);padding:var(--sp-5) var(--sp-4); display:flex;flex-direction:column; box-shadow:0 1px 2px rgba(0,0,0,0.02); }
+  .side-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--sp-4);flex-shrink:0;}
+  .side-title{font-size:15px;font-weight:700;}
+  .side-avatar{width:26px;height:26px;border-radius:50%;background:var(--mint-soft);color:var(--mint);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;cursor:pointer;}
+  .search-box{ display:flex;align-items:center;gap:var(--sp-2); background:#F5F5F6;border-radius:10px; padding:9px 11px;margin-bottom:var(--sp-4); flex-shrink:0;border:1px solid transparent;transition:border-color .15s ease; }
+  .search-box:focus-within{border-color:var(--violet);background:#fff;}
+  .search-box svg{width:14px;height:14px;stroke-width:1.8;color:var(--muted);flex-shrink:0;}
+  .search-box input{border:none;background:none;outline:none;font-size:12.5px;width:100%;font-family:inherit;color:var(--ink-soft);}
+
+  .activity-list{ display:flex;flex-direction:column;gap:var(--sp-4); overflow-y:auto;flex:1;min-height:0; padding-right:6px;margin-right:-6px; }
+  .activity-item{display:grid;grid-template-columns:46px minmax(0,1fr);gap:var(--sp-3);align-items:center;flex-shrink:0;cursor:pointer;background:none;border:none;text-align:left;padding:0;font-family:inherit;width:100%;color:inherit;}
+  .activity-thumb{width:46px;height:46px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;line-height:1;overflow:hidden;white-space:nowrap;text-align:center;}
+  .th-1{background:linear-gradient(135deg,#F0653F,#F2A87E);}
+  .th-2{background:linear-gradient(135deg,#6B7280,#9CA3AF);}
+  .th-3{background:linear-gradient(135deg,#8B7FE8,#B8AFF2);}
+  .th-4{background:linear-gradient(135deg,#3FAE8F,#8FD9C4);}
+  .activity-body{flex:1;min-width:0;}
+  .activity-title{font-size:12.5px;font-weight:700;margin-bottom:2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.25;}
+  .activity-desc{font-size:11px;color:var(--muted);line-height:1.4;margin-bottom:5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+  .activity-meta{display:flex;justify-content:space-between;align-items:center;}
+  .activity-time{font-size:11px;color:var(--muted);}
+  .activity-empty{font-size:12px;color:var(--muted);padding:var(--sp-3) 0;}
+  .plan-job-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:4px 0;}
+  .plan-job-row .detail-card{width:28px;height:28px;}
+
+  .new-chat-btn{ margin-top:var(--sp-4);flex-shrink:0; background:var(--ink);color:#fff;border:none; padding:11px;border-radius:12px;font-size:12.5px;font-weight:600; cursor:pointer;width:100%;transition:background .15s ease;font-family:inherit; }
+  .new-chat-btn:hover{background:#000;}
+
+  /* ===== Modal ===== */
+  .modal-backdrop{position:fixed;inset:0;background:rgba(24,20,16,0.45);display:flex;align-items:center;justify-content:center;z-index:60;padding:20px;}
+  .modal-backdrop.hidden{display:none;}
+  .modal-card{background:#fff;border-radius:20px;max-width:540px;width:100%;max-height:85vh;overflow-y:auto;padding:30px;position:relative;box-shadow:0 24px 60px rgba(0,0,0,0.25);}
+  .modal-close{position:absolute;top:16px;right:16px;background:#F1F1F3;border:none;width:30px;height:30px;border-radius:50%;font-size:16px;line-height:1;cursor:pointer;color:var(--muted);}
+  .modal-close:hover{color:var(--ink);}
+  .modal-eyebrow{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:6px;}
+  .modal-title{font-size:19px;font-weight:800;margin-bottom:2px;}
+  .modal-company{font-size:13.5px;color:var(--ink-soft);margin-bottom:16px;}
+  .modal-section{margin-bottom:16px;}
+  .modal-section-title{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:7px;}
+  .modal-desc{font-size:13px;color:var(--ink-soft);line-height:1.6;}
+  .modal-action-box{background:#FBFAF9;border:1px solid var(--panel-line);border-radius:10px;padding:12px 14px;font-size:12.5px;color:var(--ink-soft);line-height:1.55;}
+  .modal-apply-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+  .modal-status-select{padding:9px 30px 9px 13px;border-radius:9px;border:1px solid var(--panel-line);font-size:12.5px;font-weight:600;font-family:inherit;background:var(--panel);cursor:pointer;}
+  .detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}
+  .detail-field{border:1px solid var(--panel-line);border-radius:8px;padding:9px 10px;background:var(--panel);}
+  .detail-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:3px;}
+  .detail-value{font-size:12.5px;font-weight:700;color:var(--ink-soft);line-height:1.35;word-break:break-word;}
+  .source-note{font-size:11.5px;color:var(--muted);line-height:1.45;margin-top:7px;}
+  @media(max-width:680px){.detail-grid{grid-template-columns:1fr;}}
+  .apply-hint{font-size:11px;color:var(--muted);margin-top:6px;}
+
+  /* ===== Offline banner ===== */
+  .offline-banner{position:fixed;inset:0;background:rgba(24,20,16,0.55);display:flex;align-items:center;justify-content:center;z-index:100;padding:20px;}
+  .offline-banner.hidden{display:none;}
+  .offline-card{background:#fff;border-radius:20px;max-width:460px;width:100%;padding:30px;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,0.3);}
+  .offline-title{font-size:16px;font-weight:800;margin-bottom:8px;}
+  .offline-text{font-size:12.5px;color:var(--ink-soft);line-height:1.55;margin-bottom:14px;}
+  .offline-text code{background:#F1F1F3;padding:2px 6px;border-radius:5px;font-family:var(--font-mono);font-size:11.5px;}
+  .offline-cmd{font-family:var(--font-mono);font-size:12px;background:#1E1E21;color:#DDEBE3;padding:11px 14px;border-radius:9px;margin-bottom:16px;text-align:left;}
+  .offline-row{display:flex;gap:8px;}
+  .offline-input{flex:1;border:1px solid var(--panel-line);border-radius:9px;padding:9px 12px;font-size:12.5px;font-family:inherit;outline:none;}
+  .offline-input:focus{border-color:var(--violet);}
+
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;font-size:12.5px;font-weight:500;padding:11px 18px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.25);z-index:90;opacity:0;pointer-events:none;transition:opacity .2s ease, transform .2s ease;}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(-4px);}
+  .toast.error{background:#B84A2E;}
+
+  .skeleton-row td{padding:16px var(--sp-4);}
+  .skeleton-bar{height:12px;border-radius:6px;background:linear-gradient(90deg,#F1F1F0 25%,#E9E8E5 37%,#F1F1F0 63%);background-size:400% 100%;animation:shimmer 1.4s ease infinite;}
+  @keyframes shimmer{0%{background-position:100% 0;}100%{background-position:0 0;}}
+
+  @media (max-width:1020px){
+    body{height:auto;overflow:visible;padding:14px;}
+    .shell{flex-direction:column;height:auto;}
+    .sidebar{width:100%;height:auto;flex-direction:row;overflow-x:auto;align-items:center;}
+    .main{height:auto;overflow-y:visible;}
+    .side-panel{width:100%;height:auto;}
+    .nav-group{flex-direction:row;overflow-x:auto;overflow-y:visible;flex:none;}
+    .nav-label{display:none;}
+    .profile-card{display:none;}
+    .action-cards{flex-direction:column;}
+    .stats-row{flex-direction:column;}
+    .toolbar{flex-direction:column;align-items:stretch;}
+    .tracker-search{width:100%;}
+    table{font-size:12px;}
+    .goal-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h10M4 18h13" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg></div>
+      <span class="brand-name">CareerCopilot</span>
+    </div>
+    <button class="nav-item sidebar-theme" onclick="toggleTheme()" title="Toggle light or dark mode">
+      <svg id="themeIcon" viewBox="0 0 24 24" fill="none"><path d="M12 3v2M12 19v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M3 12h2M19 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4" stroke="currentColor" stroke-linecap="round"/><circle cx="12" cy="12" r="4" stroke="currentColor"/></svg>
+      <span id="themeLabel">Light</span>
+    </button>
+
+    <div class="nav-group">
+      <button class="nav-item active" data-view="home" onclick="showView('home',this)">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M3 11l9-8 9 8M5 10v10h14V10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Home
+      </button>
+      <button class="nav-item" data-view="tracker" onclick="showView('tracker',this)">
+        <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M3 9h18" stroke="currentColor" stroke-width="1.8"/></svg>
+        Job Tracker
+      </button>
+      <button class="nav-item" data-view="chat" onclick="showView('chat',this)">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        Ask Copilot
+      </button>
+      <button class="nav-item" data-view="digest" onclick="showView('digest',this)">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M8 2v4M16 2v4M3 9h18M5 5h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z" stroke="currentColor" stroke-width="1.8"/></svg>
+        Weekly Digest
+      </button>
+
+      <div class="nav-label">Manage</div>
+      <button class="nav-item" data-view="profile" onclick="showView('profile',this,'resumeCard')">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M20 21a8 8 0 10-16 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="1.8"/></svg>
+        Profile
+      </button>
+      <button class="nav-item" data-view="notifications" onclick="showView('notifications',this)">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Notifications
+      </button>
+      <button class="nav-item" data-view="profile" onclick="showView('profile',this,'notifPrefsCard')">
+        <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/><path d="M19.4 15a1.7 1.7 0 00.3 1.9l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.9-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1-1.6 1.7 1.7 0 00-1.9.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.9 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1 1.7 1.7 0 00-.3-1.9l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.9.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.9-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.9V9a1.7 1.7 0 001.5 1h.1a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z" stroke="currentColor" stroke-width="1.8"/></svg>
+        Settings
+      </button>
+    </div>
+
+    <div class="profile-card" onclick="showView('profile', document.querySelector('.nav-item[data-view=profile]'))">
+      <div class="profile-top">
+        <div class="avatar" id="sidebarAvatar">--</div>
+        <div>
+          <div class="profile-name" id="sidebarName">Loading…</div>
+          <div class="profile-sub" id="sidebarEmail"></div>
+        </div>
+      </div>
+      <button class="sync-btn" id="syncBtn" onclick="event.stopPropagation(); syncGmail();">
+        <svg id="syncIcon" viewBox="0 0 24 24" fill="none"><path d="M21 12a9 9 0 11-3-6.7" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M21 3v6h-6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span id="syncLabel">Sync Gmail</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ===== MAIN ===== -->
+  <main class="main">
+
+    <!-- ---------- HOME ---------- -->
+    <section id="view-home" class="view active">
+      <div class="hero">
+        <svg class="hero-mark" viewBox="0 0 100 100" fill="none">
+          <path d="M50 5 L58 42 L95 50 L58 58 L50 95 L42 58 L5 50 L42 42 Z" fill="url(#g1)"/>
+          <defs><linearGradient id="g1" x1="0" y1="0" x2="100" y2="100">
+            <stop offset="0%" stop-color="#8B7FE8"/><stop offset="55%" stop-color="#F0653F"/><stop offset="100%" stop-color="#E8944B"/>
+          </linearGradient></defs>
+        </svg>
+        <h1 class="hero-title" id="heroTitle">Welcome!</h1>
+        <p class="hero-sub" id="heroSub">Here's what needs your attention today.</p>
+
+        <div class="focus-card" id="focusCard" style="display:none;">
+          <div style="flex:1;min-width:0;">
+            <div class="focus-label" id="focusLabel">Top priority</div>
+            <div class="focus-title" id="focusTitle"></div>
+            <div class="focus-reason" id="focusReason"></div>
+          </div>
+          <button class="icon-detail icon-detail-primary" id="focusDetailsBtn" aria-label="View job details" title="View job details">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor"/><path d="M12 10v7" stroke="currentColor" stroke-linecap="round"/><path d="M12 7h.01" stroke="currentColor" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+
+        <div class="action-cards">
+          <button class="action-card" onclick="showView('tracker', document.querySelector('.nav-item[data-view=tracker]'))">
+            <div class="action-icon ai-1"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M3 9h18" stroke="currentColor" stroke-width="1.8"/></svg></div>
+            <div class="action-title">Find opportunities</div>
+            <div class="action-desc">Browse ranked jobs pulled from your connected sources</div>
+          </button>
+          <button class="action-card" onclick="showView('tracker', document.querySelector('.nav-item[data-view=tracker]'))">
+            <div class="action-icon ai-2"><svg viewBox="0 0 24 24" fill="none"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4 12.5-12.5z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="action-title">Prioritize my week</div>
+            <div class="action-desc">Jobs ranked by deadline and profile match</div>
+          </button>
+          <button class="action-card" onclick="showView('chat', document.querySelector('.nav-item[data-view=chat]'))">
+            <div class="action-icon ai-3"><svg viewBox="0 0 24 24" fill="none"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+            <div class="action-title">Ask Copilot</div>
+            <div class="action-desc">Get answers grounded in your saved jobs</div>
+          </button>
+        </div>
+
+        <div class="composer">
+          <input class="composer-input" id="homeComposer" placeholder="Ask about a deadline, a company, or what to do next…" onkeydown="if(event.key==='Enter'){sendFromHome();}">
+          <div class="composer-row">
+            <div class="composer-actions">
+              <button class="composer-btn" onclick="showView('profile', document.querySelector('.nav-item[data-view=profile]'),'resumeCard')"><svg viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" stroke="currentColor" stroke-width="1.8"/><path d="M14 2v6h6" stroke="currentColor" stroke-width="1.8"/></svg>Profile</button>
+              <button class="composer-btn" onclick="showView('profile', document.querySelector('.nav-item[data-view=profile]'))"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/><path d="M19.4 15a1.7 1.7 0 00.3 1.9l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.9-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1-1.6 1.7 1.7 0 00-1.9.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.9 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1 1.7 1.7 0 00-.3-1.9l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.9.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.9-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.9V9a1.7 1.7 0 001.5 1h.1a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z" stroke="currentColor" stroke-width="1.8"/></svg>Settings</button>
+            </div>
+            <button class="composer-send" onclick="sendFromHome()"><svg viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" stroke="white" stroke-width="1.8" stroke-linejoin="round"/></svg></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- JOB TRACKER ---------- -->
+    <section id="view-tracker" class="view">
+      <div class="page-wrap">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Job Tracker</h1>
+            <p class="page-sub" id="trackerSub">Loading opportunities…</p>
+          </div>
+          <div class="gmail-chip" id="trackerGmailChip"><span class="dot-off"></span>Gmail not connected</div>
+        </div>
+
+        <div class="toolbar">
+          <div class="filters" id="filterRow"></div>
+          <div class="tracker-search">
+            <svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            <input id="trackerSearch" placeholder="Search company or role…" oninput="applyTrackerSearch()">
+          </div>
+        </div>
+
+        <div class="table-card">
+          <table>
+            <colgroup>
+              <col style="width:20%;">
+              <col style="width:22%;">
+              <col style="width:15%;">
+              <col style="width:14%;">
+              <col style="width:14%;">
+              <col style="width:15%;">
+            </colgroup>
+            <thead><tr><th>Company</th><th>Role</th><th>Priority</th><th>Deadline</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="trackerBody">
+              <tr class="skeleton-row"><td colspan="6"><div class="skeleton-bar" style="width:60%;"></div></td></tr>
+            </tbody>
+          </table>
+          <div class="table-empty" id="trackerEmpty" style="display:none;">No opportunities match this filter.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- ASK COPILOT ---------- -->
+    <section id="view-chat" class="view">
+      <div class="page-wrap" style="height:100%;">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Ask Copilot</h1>
+            <p class="page-sub">Grounded in your saved opportunities — not a generic job-search chatbot.</p>
+          </div>
+        </div>
+        <div class="chat-shell">
+          <div class="chat-log" id="chatLog"></div>
+          <div class="chat-suggestions" id="chatSuggestions"></div>
+          <div class="chat-input-row">
+            <input class="chat-input" id="chatInput" placeholder="Ask about deadlines, companies, or what to do next…" onkeydown="if(event.key==='Enter'){sendChatFromInput();}">
+            <button class="chat-send" id="chatSendBtn" onclick="sendChatFromInput()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" stroke="white" stroke-width="1.8" stroke-linejoin="round"/></svg></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- WEEKLY DIGEST ---------- -->
+    <section id="view-digest" class="view">
+      <div class="page-wrap">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Weekly Digest</h1>
+            <p class="page-sub">A focused snapshot of your tracked opportunities, deadlines, and next steps.</p>
+          </div>
+        </div>
+        <div class="digest-banner">
+          <div class="digest-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M8 2v4M16 2v4M3 9h18M5 5h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z" stroke="currentColor"/></svg></div>
+          <div style="flex:1;">
+            <div style="font-weight:700;font-size:14px;" id="digestHeadline">Priority opportunities this week</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px;" id="digestSub"></div>
+          </div>
+          <button class="btn" onclick="loadAll(true)">Refresh</button>
+        </div>
+        <div class="list-card">
+          <div class="info-card-title">Recommended focus</div>
+          <div id="digestList"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- NOTIFICATIONS ---------- -->
+    <section id="view-notifications" class="view">
+      <div class="page-wrap">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Notifications</h1>
+            <p class="page-sub">Live, generated from your current priority tasks.</p>
+          </div>
+        </div>
+        <div class="list-card">
+          <div id="notificationsList"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- PROFILE / SETTINGS ---------- -->
+    <section id="view-profile" class="view">
+      <div class="page-wrap">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Profile &amp; Settings</h1>
+            <p class="page-sub">Your account, goals, profile, and how Copilot reaches you.</p>
+          </div>
+        </div>
+
+        <div class="profile-header-card">
+          <div class="avatar-lg" id="profileAvatarLg">--</div>
+          <div>
+            <div class="profile-name-lg" id="profileNameLg">Loading…</div>
+            <div class="profile-email" id="profileEmailLg"></div>
+            <div class="profile-bio" id="profileBio"></div>
+          </div>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat-card"><div class="stat-value" id="statTracked">–</div><div class="stat-label">Opportunities tracked</div></div>
+          <div class="stat-card"><div class="stat-value" id="statApplied">–</div><div class="stat-label">Applications sent</div></div>
+          <div class="stat-card"><div class="stat-value" id="statUrgent">–</div><div class="stat-label">Need action this week</div></div>
+        </div>
+
+        <div class="info-card" id="goalsCard">
+          <div class="info-card-title">Daily application goal</div>
+          <div class="goal-grid">
+            <div>
+              <div class="info-title">Applications per day</div>
+              <div class="info-sub">Copilot uses this goal to build your weekly plan and track progress.</div>
+              <div class="goal-control">
+                <input class="goal-input" id="dailyGoalInput" type="number" min="1" max="20" value="3">
+                <button class="btn btn-primary" onclick="saveDailyGoal()">Save goal</button>
+              </div>
+            </div>
+            <div>
+              <div class="info-title" id="goalProgressTitle">This week</div>
+              <div class="progress-grid" id="progressGrid"></div>
+              <div class="progress-meta" id="progressMeta"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-card-title">Connected accounts</div>
+          <div class="info-row">
+            <div class="info-icon-circle" style="background:var(--mint-soft);color:#1E6E5B;">
+              <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor"/><path d="M3 7l9 6 9-6" stroke="currentColor"/></svg>
+            </div>
+            <div class="info-left"><div class="info-title">Gmail</div><div class="info-sub" id="gmailSub">Not checked yet</div></div>
+            <span class="status-pill status-off" id="gmailStatusPill">Not connected</span>
+            <button class="btn-small" id="gmailSyncBtn" onclick="syncGmail()">Sync now</button>
+          </div>
+          <div class="info-row">
+            <div class="info-icon-circle" style="background:var(--amber-soft);color:#985F1D;">
+              <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor"/><path d="M8 2v4M16 2v4M3 9h18" stroke="currentColor"/></svg>
+            </div>
+            <div class="info-left"><div class="info-title">Google Calendar</div><div class="info-sub">Not integrated in the backend yet</div></div>
+            <span class="status-pill status-off">Not built</span>
+            <button class="btn-small" disabled title="No backend endpoint yet">Connect</button>
+          </div>
+        </div>
+
+        <div class="info-card" id="resumeCard">
+          <div class="info-card-title">Profile from resume</div>
+          <div class="info-row">
+            <div class="info-icon-circle" style="background:var(--violet-soft);color:#5C4FC7;">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" stroke="currentColor"/><path d="M14 2v6h6" stroke="currentColor"/></svg>
+            </div>
+            <div class="info-left"><div class="info-title" id="resumeName">–</div><div class="info-sub" id="resumeTargetRoles">Loaded from your profile</div></div>
+          </div>
+          <div class="skill-chip-row" id="resumeSkills"></div>
+          <div class="resume-file-list" id="resumeFiles"></div>
+          <div class="upload-zone" id="resumeDropZone" ondragover="onResumeDragOver(event)" ondragleave="onResumeDragLeave(event)" ondrop="onResumeDrop(event)">
+            <div class="upload-title">Drop your PDF resume here</div>
+            <div class="upload-sub" id="resumeUploadSub">Copilot will parse skills, roles, and profile keywords.</div>
+            <div class="upload-actions">
+              <input class="hidden-file" id="resumeFileInput" type="file" accept="application/pdf" onchange="uploadResumeFile(this.files[0])">
+              <button class="btn" onclick="document.getElementById('resumeFileInput').click()">Choose PDF</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-card" id="notifPrefsCard">
+          <div class="info-card-title">Notification preferences</div>
+          <div class="toggle-row">
+            <div><div class="toggle-text-title">Weekly digest email</div><div class="toggle-text-sub">Not wired to an email sender yet — toggle is local only</div></div>
+            <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div><div class="toggle-text-title">Deadline reminders</div><div class="toggle-text-sub">Not wired to an email sender yet — toggle is local only</div></div>
+            <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div><div class="toggle-text-title">New opportunity alerts</div><div class="toggle-text-sub">Not wired to an email sender yet — toggle is local only</div></div>
+            <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== RIGHT PANEL ===== -->
+  <aside class="side-panel">
+    <div class="side-head">
+      <span class="side-title">Upcoming Deadlines</span>
+      <div class="side-avatar" id="sideAvatar" onclick="showView('profile', document.querySelector('.nav-item[data-view=profile]'))">--</div>
+    </div>
+    <div class="search-box">
+      <svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <input id="sidePanelSearch" placeholder="Search opportunities..." onfocus="showView('tracker', document.querySelector('.nav-item[data-view=tracker]'))" oninput="onSidePanelSearch()">
+    </div>
+
+    <div class="activity-list" id="activityList">
+    <div class="activity-empty">Loading deadlines…</div>
+    </div>
+
+    <button class="new-chat-btn" onclick="startNewChat()">Create new chat</button>
+  </aside>
+
+</div>
+
+<!-- ===== Job detail modal ===== -->
+<div class="modal-backdrop hidden" id="jobModalBackdrop" onclick="closeJobModal(event)">
+  <div class="modal-card" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeJobModal()">&times;</button>
+    <div id="jobModalBody"></div>
+  </div>
+</div>
+
+<!-- ===== Offline banner ===== -->
+<div class="offline-banner hidden" id="offlineBanner">
+  <div class="offline-card">
+    <div class="offline-title">Can't reach the CareerCopilot backend</div>
+    <div class="offline-text">Looking for it at <code id="apiBaseDisplay"></code>. Start the FastAPI server, then retry.</div>
+    <div class="offline-cmd">cd backend<br>uvicorn main:app --reload --port 8002</div>
+    <div class="offline-row">
+      <input class="offline-input" id="apiBaseInput" placeholder="http://localhost:8002">
+      <button class="btn btn-primary" onclick="retryConnect()">Retry</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // ================= Config & state =================
+  const CONFIG = { API_BASE: 'http://localhost:8002' };
+
+  // Exposed on window (not const) so it's inspectable from the browser
+  // console during debugging.
+  window.state = {
+    jobs: [],
+    tasks: [],
+    tasksByJobId: {},
+    resume: null,
+    goals: { daily_application_goal: 3 },
+    progress: [],
+    gmail: { connected: false, email: null, checking: false, error: null },
+    chat: [],
+    loaded: false,
+    trackerFilter: 'all',
+    theme: localStorage.getItem('careerCopilotTheme') || 'light',
+  };
+
+  const PRIORITY_META = {
+    'Prepare for Interview': { cls: 'pr-interview' },
+    'Do Now':        { cls: 'pr-donow' },
+    'Do Today':       { cls: 'pr-dotoday' },
+    'Follow Up':      { cls: 'pr-followup' },
+    'High Value':     { cls: 'pr-highvalue' },
+    'Do This Week':   { cls: 'pr-week' },
+    'Tailor First':   { cls: 'pr-tailor' },
+    'Closed':         { cls: 'pr-closed' },
+    'Low Priority':   { cls: 'pr-low' },
+  };
+
+  // Canonical application-tracking statuses (matches backend VALID_STATUSES).
+  const STATUS_ORDER = ['not_applied', 'applied', 'interviewing', 'rejected'];
+  const STATUS_META = {
+    'not_applied':  { label: 'Not Applied', cls: 'st-not' },
+    'applied':      { label: 'Applied', cls: 'st-applied' },
+    'interviewing': { label: 'Interviewing', cls: 'st-interview' },
+    'rejected':     { label: 'Rejected', cls: 'st-rejected' },
+  };
+
+  const CHAT_SUGGESTIONS = [
+    'What should I do today?',
+    'Which job is my best match?',
+    'What skills am I missing?',
+    'Make me a weekly plan.',
+    'Any follow-ups needed?',
+    'Explain my top priority.',
+  ];
+
+  // ================= Small helpers =================
+  function esc(str){
+    if(str === null || str === undefined) return '';
+    return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+  function detailsIconButton(jobId, className){
+    return `
+      <button class="${esc(className || 'detail-card')}" aria-label="View job details" title="View job details" onclick="event.stopPropagation(); openJobModal(${jobId});">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor"/><path d="M12 10v7" stroke="currentColor" stroke-linecap="round"/><path d="M12 7h.01" stroke="currentColor" stroke-linecap="round"/></svg>
+      </button>`;
+  }
+  function initials(name){
+    const clean = cleanValue(name, '').replace(/[^A-Za-z0-9 ]/g, ' ').trim();
+    if(!clean) return '--';
+    const parts = clean.split(/\s+/).filter(Boolean);
+    const result = parts.length > 1
+      ? ((parts[0][0] || '') + (parts[1][0] || ''))
+      : clean.slice(0, 2);
+    return result.toUpperCase() || '--';
+  }
+  function titleCase(s){
+    return (s||'').replace(/\b\w/g, c => c.toUpperCase());
+  }
+  function cleanValue(value, fallback){
+    const v = value === null || value === undefined ? '' : String(value).trim();
+    if(!v || v.toLowerCase() === 'null' || v.toLowerCase() === 'undefined') return fallback;
+    return v;
+  }
+  function resumeFileNames(){
+    if(!state.resume) return [];
+    const files = Array.isArray(state.resume.resume_files) ? state.resume.resume_files : [];
+    const names = files.map(file => typeof file === 'string' ? file : file.filename).filter(Boolean);
+    if(state.resume.resume_filename && !names.includes(state.resume.resume_filename)){
+      names.unshift(state.resume.resume_filename);
+    }
+    return names;
+  }
+  function formatDeadline(days){
+    if(days === null || days === undefined || days === '') return 'No deadline';
+    const n = Number(days);
+    if(Number.isNaN(n)) return 'No deadline';
+    if(n < 0) return 'Overdue';
+    if(n === 0) return 'Today';
+    if(n === 1) return 'Tomorrow';
+    return `In ${n}d`;
+  }
+  function deadlineHasDate(text){
+    return !!(text && /\b(jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec|\d{1,2}\/\d{1,2})/i.test(text));
+  }
+  function compactDeadlineText(text){
+    let clean = cleanValue(text, '').replace(/\s+/g, ' ').trim();
+    clean = clean.replace(/^(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday|Mon|Tue|Wed|Thu|Fri|Sat|Sun),?\s+/i, '');
+    clean = clean.replace(/\s+\d{1,2}:\d{2}\s*(am|pm)?\s*[A-Z]{2,4}$/i, '');
+    const parsed = new Date(clean);
+    if(!Number.isNaN(parsed.getTime())){
+      return parsed.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+    return clean.replace(/\b0(\d)\b/g, '$1');
+  }
+  function deadlineTextFromDescription(job){
+    const text = cleanValue(job && job.description, '');
+    if(!text) return '';
+    const fullDate = text.match(/\b(?:Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday),?\s+(?:January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)\.?\s+\d{1,2},?\s+\d{4}/i);
+    if(fullDate) return fullDate[0];
+    const compactDate = text.match(/\b(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun),?\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)\.?\s+\d{1,2}(?:\s+\d{1,2}:\d{2}\s*(?:am|pm)?\s*[A-Z]{2,4})?/i);
+    if(compactDate){
+      const received = job && job.received_at ? new Date(job.received_at) : new Date();
+      const year = Number.isNaN(received.getTime()) ? new Date().getFullYear() : received.getFullYear();
+      return compactDate[0].replace(/\s+\d{1,2}:\d{2}\s*(am|pm)?\s*[A-Z]{2,4}$/i, '') + ', ' + year;
+    }
+    return '';
+  }
+  function rawDeadlineText(job){
+    if(job && deadlineHasDate(job.deadline_text)) return job.deadline_text;
+    return deadlineTextFromDescription(job);
+  }
+  function parseDeadlineDate(job){
+    const raw = rawDeadlineText(job);
+    if(!raw) return null;
+    let clean = raw.replace(/\s+/g, ' ').trim();
+    clean = clean.replace(/^(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday|Mon|Tue|Wed|Thu|Fri|Sat|Sun),?\s+/i, '');
+    clean = clean.replace(/\s+\d{1,2}:\d{2}\s*(am|pm)?\s*[A-Z]{2,4}$/i, '');
+    const parsed = new Date(clean);
+    return Number.isNaN(parsed.getTime()) ? null : parsed;
+  }
+  function daysUntilDeadline(job){
+    const parsed = parseDeadlineDate(job);
+    if(parsed){
+      const today = new Date();
+      const start = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+      const due = new Date(parsed.getFullYear(), parsed.getMonth(), parsed.getDate());
+      return Math.ceil((due - start) / 86400000);
+    }
+    const n = Number(job && job.deadline_days);
+    return Number.isNaN(n) ? 9999 : n;
+  }
+  function relativeDeadlineLabel(days){
+    if(days < 0) return 'Overdue';
+    if(days === 0) return 'Today';
+    if(days === 1) return 'Tomorrow';
+    return `in ${days}d`;
+  }
+  function formatJobDeadline(job){
+    const raw = rawDeadlineText(job);
+    if(raw){
+      const days = daysUntilDeadline(job);
+      return `${compactDeadlineText(raw)} (${relativeDeadlineLabel(days)})`;
+    }
+    return formatDeadline(job ? job.deadline_days : null);
+  }
+  function renderDeadline(job){
+    const raw = rawDeadlineText(job);
+    const days = daysUntilDeadline(job);
+    const main = raw ? compactDeadlineText(raw) : formatDeadline(job ? job.deadline_days : null);
+    const sub = raw ? relativeDeadlineLabel(days) : '';
+    return `<span class="deadline-copy"><span class="deadline-main">${esc(main)}</span>${sub ? `<span class="deadline-sub">${esc(sub)}</span>` : ''}</span>`;
+  }
+  function urgencyClass(job){
+    const days = daysUntilDeadline(job);
+    if(days < 0) return 'urg-overdue';
+    if(days <= 3) return 'urg-soon';
+    if(days <= 10) return 'urg-week';
+    return 'urg-later';
+  }
+  function jobStatusLabel(job){
+    const key = (job && job.status ? job.status : 'not_applied').toLowerCase();
+    return STATUS_META[key] ? STATUS_META[key].label : titleCase(key);
+  }
+  function digestJobSummary(job){
+    if(!job) return 'Opportunity details available in the tracker.';
+    const parts = [
+      cleanValue(job.title, 'Untitled opportunity'),
+      `Deadline ${formatJobDeadline(job)}`,
+      jobStatusLabel(job),
+    ];
+    return parts.filter(Boolean).join(' · ');
+  }
+  function cleanJobDescription(job){
+    let text = cleanValue(job && job.description, 'No description extracted yet.');
+    text = text.replace(/\r/g, '\n').replace(/[ \t]+/g, ' ');
+    text = text.replace(/Apply early to stand out/gi, '');
+    text = text.replace(/You might be a match for this new job from .*?Check it out!/gis, '');
+    text = text.replace(/Applications (?:are )?due\s+.*?(?:AM|PM)\s+[A-Z]{2,4}\.?/gis, '');
+    text = text.replace(/Last Chance to Apply/gi, '');
+    text = text.replace(/You got this!/gi, '');
+    text = text.replace(/\b(View job|Apply Now|Apply)\b/gi, '');
+    text = text.replace(/\n{3,}/g, '\n\n').trim();
+    return cleanValue(text, 'No description extracted yet.');
+  }
+  function shortJobDescription(job){
+    const text = cleanJobDescription(job);
+    if(text === 'No description extracted yet.') return text;
+    const firstChunk = text
+      .split(/\n{2,}|(?<=[.!?])\s+/)
+      .map(part => part.trim())
+      .find(Boolean) || text;
+    return firstChunk.length > 170 ? firstChunk.slice(0, 167).trim() + '...' : firstChunk;
+  }
+  function formatDateTime(value){
+    if(!value) return 'Not found';
+    const d = new Date(value);
+    if(Number.isNaN(d.getTime())) return value;
+    return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+  function renderDetailField(label, value){
+    return `
+      <div class="detail-field">
+        <div class="detail-label">${esc(label)}</div>
+        <div class="detail-value">${esc(cleanValue(value, 'Not found'))}</div>
+      </div>`;
+  }
+  function renderOptionalDetailField(label, value){
+    const clean = cleanValue(value, '');
+    return clean ? renderDetailField(label, clean) : '';
+  }
+  // Whether a job has a real, confirmed application link — and the URL
+  // itself when it does — now comes straight from the backend
+  // (job.has_real_apply_url / job.apply_url). The backend computes this
+  // once, with more context than the frontend has (e.g. whether the
+  // original email link was explicitly labeled "Apply"), so the frontend
+  // no longer re-derives it independently. That used to be two separate,
+  // slightly different implementations of the same check that could
+  // disagree with each other.
+  function jobHasRealApplyLink(job){
+    return !!(job && job.has_real_apply_url && job.apply_url);
+  }
+  let _toastUndoFn = null;
+  function showToast(msg, isError, undoFn){
+    const t = document.getElementById('toast');
+    _toastUndoFn = undoFn || null;
+    t.innerHTML = esc(msg) + (undoFn ? '<button class="toast-undo" onclick="runToastUndo()">Undo</button>' : '');
+    t.className = 'toast show' + (isError ? ' error' : '');
+    clearTimeout(showToast._timer);
+    showToast._timer = setTimeout(() => { t.classList.remove('show'); _toastUndoFn = null; }, 4200);
+  }
+  function runToastUndo(){
+    const fn = _toastUndoFn;
+    document.getElementById('toast').classList.remove('show');
+    _toastUndoFn = null;
+    if(fn) fn();
+  }
+
+  async function apiGet(path){
+    const res = await fetch(CONFIG.API_BASE + path);
+    if(!res.ok){
+      const err = new Error(await apiErrorMessage(res));
+      err.status = res.status;
+      throw err;
+    }
+    return res.json();
+  }
+  async function apiPost(path, body){
+    const res = await fetch(CONFIG.API_BASE + path, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    if(!res.ok){
+      const err = new Error(await apiErrorMessage(res));
+      err.status = res.status;
+      throw err;
+    }
+    return res.json();
+  }
+  async function apiPatch(path, body){
+    const res = await fetch(CONFIG.API_BASE + path, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    if(!res.ok){
+      const err = new Error(await apiErrorMessage(res));
+      err.status = res.status;
+      throw err;
+    }
+    return res.json();
+  }
+  async function apiErrorMessage(res){
+    try{
+      const data = await res.clone().json();
+      return data.detail || data.message || ('HTTP ' + res.status);
+    }catch(_){
+      return 'HTTP ' + res.status;
+    }
+  }
+  async function apiUpload(path, file){
+    const form = new FormData();
+    form.append('file', file);
+    const res = await fetch(CONFIG.API_BASE + path, {
+      method: 'POST',
+      body: form,
+    });
+    if(!res.ok){
+      let detail = 'HTTP ' + res.status;
+      try{
+        const payload = await res.json();
+        detail = payload.detail || detail;
+      }catch(_){}
+      const err = new Error(detail);
+      err.status = res.status;
+      throw err;
+    }
+    return res.json();
+  }
+
+  function applyTheme(theme){
+    state.theme = theme === 'dark' ? 'dark' : 'light';
+    document.documentElement.dataset.theme = state.theme;
+    localStorage.setItem('careerCopilotTheme', state.theme);
+    const label = document.getElementById('themeLabel');
+    if(label) label.textContent = state.theme === 'dark' ? 'Dark' : 'Light';
+  }
+  function toggleTheme(){
+    applyTheme(state.theme === 'dark' ? 'light' : 'dark');
+  }
+
+  // ================= View switching =================
+  function showView(id, el, scrollToId){
+    if(!document.getElementById('view-' + id)) id = 'home';
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.getElementById('view-' + id).classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    const navEl = el || document.querySelector(`.nav-item[data-view=${id}]`);
+    if(navEl) navEl.classList.add('active');
+    localStorage.setItem('careerCopilotActiveView', id);
+    document.querySelector('.main').scrollTop = 0;
+    if(id === 'chat') setTimeout(() => document.getElementById('chatInput').focus(), 50);
+    if(scrollToId){
+      setTimeout(() => {
+        const target = document.getElementById(scrollToId);
+        if(target){
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          target.classList.add('flash');
+          setTimeout(() => target.classList.remove('flash'), 900);
+        }
+      }, 80);
+    }
+  }
+
+  function restoreActiveView(){
+    const saved = localStorage.getItem('careerCopilotActiveView') || 'home';
+    const id = document.getElementById('view-' + saved) ? saved : 'home';
+    showView(id, document.querySelector(`.nav-item[data-view=${id}]`));
+  }
+
+  // ================= Data loading =================
+  async function loadAll(isRefresh){
+    if(isRefresh) showToast('Refreshing…');
+    try{
+      const [jobsRes, tasksRes, resumeRes] = await Promise.all([
+        apiGet('/data/combined-jobs'),
+        apiGet('/tasks/'),
+        apiGet('/profile/'),
+      ]);
+      state.jobs = jobsRes.jobs || [];
+      state.tasks = tasksRes.tasks || [];
+      state.tasksByJobId = {};
+      state.tasks.forEach(t => { state.tasksByJobId[t.job_id] = t; });
+      state.resume = resumeRes.resume_profile || null;
+      state.goals = resumeRes.goals || state.goals;
+      state.progress = resumeRes.progress || [];
+      state.loaded = true;
+      hideOfflineBanner();
+      renderEverything();
+      restoreActiveView();
+      checkGmailStatus();
+      if(isRefresh) showToast('Refreshed');
+    }catch(e){
+      console.error(e);
+      showOfflineBanner();
+    }
+  }
+
+  function renderEverything(){
+    renderSidebarProfile();
+    renderHome();
+    renderTracker();
+    renderProfile();
+    renderDigest();
+    renderNotifications();
+    renderActivity();
+    applyTheme(state.theme);
+    if(state.chat.length === 0) seedChat();
+    renderChatSuggestions();
+  }
+
+  // ================= Offline banner =================
+  function showOfflineBanner(){
+    document.getElementById('apiBaseDisplay').textContent = CONFIG.API_BASE;
+    document.getElementById('apiBaseInput').value = CONFIG.API_BASE;
+    document.getElementById('offlineBanner').classList.remove('hidden');
+  }
+  function hideOfflineBanner(){
+    document.getElementById('offlineBanner').classList.add('hidden');
+  }
+  function retryConnect(){
+    const val = document.getElementById('apiBaseInput').value.trim();
+    if(val) CONFIG.API_BASE = val.replace(/\/$/, '');
+    loadAll();
+  }
+
+  // ================= Sidebar / profile =================
+  function renderSidebarProfile(){
+    const name = state.resume ? state.resume.name : 'Guest';
+    document.getElementById('sidebarAvatar').textContent = initials(name);
+    document.getElementById('sidebarName').textContent = name;
+    document.getElementById('sidebarEmail').textContent = state.gmail.email || 'Gmail not connected';
+    document.getElementById('sideAvatar').textContent = initials(name);
+    document.getElementById('profileAvatarLg').textContent = initials(name);
+    document.getElementById('profileNameLg').textContent = name;
+    document.getElementById('profileEmailLg').textContent = state.gmail.email || 'No email connected yet';
+    document.getElementById('profileBio').textContent = state.resume ? (state.resume.target_roles || []).join(' · ') : '';
+  }
+
+  function renderProfile(){
+    if(!state.resume) return;
+    document.getElementById('resumeName').textContent = state.resume.name + "'s profile";
+    document.getElementById('resumeTargetRoles').textContent = 'Targeting: ' + (state.resume.target_roles || []).join(', ');
+    const chipsHost = document.getElementById('resumeSkills');
+    chipsHost.innerHTML = (state.resume.skills || []).map(s => `<span class="skill-chip">${esc(s)}</span>`).join('');
+    const fileNames = resumeFileNames();
+    const filesHost = document.getElementById('resumeFiles');
+    filesHost.innerHTML = fileNames.length
+      ? fileNames.map(name => `<span class="resume-file-pill">${esc(name)}</span>`).join('')
+      : '<span class="upload-sub">No resume PDF added yet.</span>';
+    document.getElementById('resumeUploadSub').textContent = fileNames.length
+      ? `${fileNames.length} PDF${fileNames.length === 1 ? '' : 's'} added. Upload another PDF to refresh your parsed profile.`
+      : 'Copilot will parse skills, roles, and profile keywords.';
+    document.getElementById('dailyGoalInput').value = state.goals.daily_application_goal || 3;
+
+    const tracked = state.jobs.length;
+    const applied = state.jobs.filter(j => (j.status||'').toLowerCase() === 'applied').length;
+    const urgent = state.tasks.filter(t => t.priority === 'Do Now' || t.priority === 'Do Today').length;
+    document.getElementById('statTracked').textContent = tracked;
+    document.getElementById('statApplied').textContent = applied;
+    document.getElementById('statUrgent').textContent = urgent;
+
+    renderProgressGraph();
+    updateGmailStatusUI();
+  }
+
+  function renderProgressGraph(){
+    const host = document.getElementById('progressGrid');
+    if(!host) return;
+    const progress = state.progress || [];
+    host.innerHTML = progress.map(day => {
+      const title = `${day.date}: ${day.count}/${day.goal} applications`;
+      return `<div class="progress-cell progress-l${esc(day.level)}" title="${esc(title)}"></div>`;
+    }).join('');
+    const today = progress[progress.length - 1] || { count: 0, goal: state.goals.daily_application_goal || 3 };
+    const weekCount = progress.slice(-7).reduce((sum, day) => sum + (day.count || 0), 0);
+    const weeklyGoal = (state.goals.daily_application_goal || 3) * 7;
+    document.getElementById('goalProgressTitle').textContent = `Today: ${today.count}/${today.goal}`;
+    document.getElementById('progressMeta').textContent = `This week: ${weekCount}/${weeklyGoal} applications completed`;
+  }
+
+  async function saveDailyGoal(){
+    const raw = document.getElementById('dailyGoalInput').value;
+    const goal = Math.max(Number(raw || 1), 1);
+    try{
+      const res = await apiPatch('/profile/goals', { daily_application_goal: goal });
+      state.goals = res.goals || state.goals;
+      state.progress = res.progress || state.progress;
+      renderProfile();
+      showToast('Daily goal saved');
+    }catch(e){
+      showToast('Could not save goal — ' + (e.message || 'network error'), true);
+    }
+  }
+
+  function onResumeDragOver(event){
+    event.preventDefault();
+    document.getElementById('resumeDropZone').classList.add('dragging');
+  }
+  function onResumeDragLeave(event){
+    event.preventDefault();
+    document.getElementById('resumeDropZone').classList.remove('dragging');
+  }
+  function onResumeDrop(event){
+    event.preventDefault();
+    document.getElementById('resumeDropZone').classList.remove('dragging');
+    const file = event.dataTransfer.files && event.dataTransfer.files[0];
+    uploadResumeFile(file);
+  }
+  async function uploadResumeFile(file){
+    if(!file) return;
+    if(!file.name.toLowerCase().endsWith('.pdf')){
+      showToast('Please upload a PDF resume', true);
+      return;
+    }
+    const sub = document.getElementById('resumeUploadSub');
+    sub.textContent = 'Parsing resume…';
+    try{
+      const res = await apiUpload('/resume/upload', file);
+      state.resume = res.resume_profile || state.resume;
+      renderSidebarProfile();
+      renderProfile();
+      await refreshTasksOnly();
+      sub.textContent = 'Profile updated from ' + file.name;
+      showToast('Profile updated from resume');
+    }catch(e){
+      sub.textContent = 'Could not parse resume. Try another PDF.';
+      showToast('Resume upload failed — ' + (e.message || 'network error'), true);
+    }
+  }
+
+  function updateGmailStatusUI(){
+    const pill = document.getElementById('gmailStatusPill');
+    const sub = document.getElementById('gmailSub');
+    const chip = document.getElementById('trackerGmailChip');
+    if(state.gmail.checking){
+      pill.textContent = 'Checking…';
+      pill.className = 'status-pill status-off';
+      sub.textContent = 'Contacting Gmail…';
+    } else if(state.gmail.connected){
+      pill.textContent = 'Connected';
+      pill.className = 'status-pill status-connected';
+      sub.textContent = 'Connected as ' + state.gmail.email;
+      chip.innerHTML = '<span class="dot-live"></span>Gmail connected · ' + esc(state.gmail.email);
+    } else if(state.gmail.error){
+      pill.textContent = 'Error';
+      pill.className = 'status-pill status-error';
+      sub.textContent = state.gmail.error;
+      chip.innerHTML = '<span class="dot-off"></span>Gmail not connected';
+    } else {
+      pill.textContent = 'Not connected';
+      pill.className = 'status-pill status-off';
+      sub.textContent = 'Click "Sync now" to check / connect';
+      chip.innerHTML = '<span class="dot-off"></span>Gmail not connected';
+    }
+  }
+
+  async function syncGmail(){
+    state.gmail.checking = true;
+    state.gmail.error = null;
+    updateGmailStatusUI();
+    const icon = document.getElementById('syncIcon');
+    const label = document.getElementById('syncLabel');
+    icon.classList.add('spin');
+    label.textContent = 'Syncing…';
+    document.getElementById('syncBtn').disabled = true;
+    try{
+      const sync = await apiPost('/gmail/sync', {});
+      state.gmail.connected = true;
+      state.gmail.email = sync.email || state.gmail.email;
+      state.gmail.checking = false;
+      await loadAll();
+
+      const added = sync.newly_added_to_tracker || 0;
+      const applied = sync.statuses_updated_to_applied || 0;
+      const emailsFound = sync.summary?.emails_found || 0;
+      const jobsExtracted = sync.summary?.jobs_extracted || 0;
+      let syncMsg = `Synced — ${emailsFound} emails scanned, ${jobsExtracted} job${jobsExtracted === 1 ? '' : 's'} extracted`;
+      syncMsg += added
+        ? `, ${added} new opportunit${added === 1 ? 'y' : 'ies'} added`
+        : ', no new opportunities';
+      if(applied){
+        syncMsg += `, ${applied} marked applied`;
+      }
+      showToast(syncMsg);
+    }catch(e){
+      state.gmail.connected = false;
+      state.gmail.checking = false;
+      state.gmail.error = (e.status === 500)
+        ? 'Needs Gmail OAuth — run the backend locally and complete the Google consent flow once, then retry.'
+        : (e.message || 'Sync failed. Check that the backend is running on port 8002.');
+      label.textContent = 'Sync Gmail';
+      showToast('Gmail sync failed — ' + state.gmail.error, true);
+    }
+    icon.classList.remove('spin');
+    document.getElementById('syncBtn').disabled = false;
+    setTimeout(() => { document.getElementById('syncLabel').textContent = 'Sync Gmail'; }, 2000);
+    renderSidebarProfile();
+    updateGmailStatusUI();
+  }
+
+  async function checkGmailStatus(){
+    try{
+      const status = await apiGet('/gmail/status');
+      state.gmail.connected = !!status.connected;
+      state.gmail.email = status.email || null;
+      state.gmail.error = status.connected ? null : (status.error || null);
+      state.gmail.checking = false;
+      renderSidebarProfile();
+      updateGmailStatusUI();
+    }catch(e){
+      state.gmail.connected = false;
+      state.gmail.error = e.message || 'Could not check Gmail status.';
+      state.gmail.checking = false;
+      updateGmailStatusUI();
+    }
+  }
+
+  // ================= Home =================
+  function renderHome(){
+    const name = state.resume ? state.resume.name : 'there';
+    document.getElementById('heroTitle').textContent = 'Welcome, ' + name + '!';
+    const focusCard = document.getElementById('focusCard');
+    if(state.tasks.length > 0){
+      const top = state.tasks[0];
+      const job = state.jobs.find(j => j.id === top.job_id);
+      const company = job ? cleanValue(job.company, 'Unknown company') : 'Opportunity';
+      const title = job ? cleanValue(job.title, 'Untitled opportunity') : top.task_title;
+      focusCard.style.display = 'flex';
+      document.getElementById('focusLabel').textContent = top.priority + ' · ' + formatJobDeadline(job || {});
+      document.getElementById('focusTitle').textContent = title + ' at ' + company;
+      document.getElementById('focusReason').textContent = shortJobDescription(job);
+      document.getElementById('focusDetailsBtn').onclick = () => openJobModal(top.job_id);
+      document.getElementById('heroSub').textContent = state.tasks.length + ' opportunities analyzed. Here\'s what needs your attention today.';
+    } else {
+      focusCard.style.display = 'none';
+      document.getElementById('heroSub').textContent = 'No opportunities tracked yet.';
+    }
+  }
+
+  function sendFromHome(){
+    const input = document.getElementById('homeComposer');
+    const val = input.value.trim();
+    if(!val) return;
+    input.value = '';
+    showView('chat', document.querySelector('.nav-item[data-view=chat]'));
+    sendChat(val);
+  }
+
+  // ================= Job Tracker =================
+  function jobWithTask(job){
+    if(!job) return {};
+    const task = state.tasksByJobId[job.id];
+    return Object.assign({}, job, {
+      priority: task ? task.priority : null,
+      match_score: task ? task.match_score : null,
+      match_breakdown: task ? task.match_breakdown : null,
+      missing_skills: task ? task.missing_skills : [],
+      suggested_action: task ? task.suggested_action : null,
+      reason: task ? task.reason : null,
+    });
+  }
+
+  function orderedJobs(){
+    const taskRank = {};
+    state.tasks.forEach((task, index) => { taskRank[task.job_id] = index; });
+    const statusRank = { not_applied: 0, interviewing: 1, applied: 2, rejected: 3 };
+    return [...state.jobs].sort((a, b) => {
+      const aStatus = statusRank[(a.status || '').toLowerCase()] ?? 4;
+      const bStatus = statusRank[(b.status || '').toLowerCase()] ?? 4;
+      if(aStatus !== bStatus) return aStatus - bStatus;
+
+      const aDays = daysUntilDeadline(a);
+      const bDays = daysUntilDeadline(b);
+      if(aDays !== bDays) return aDays - bDays;
+
+      return (taskRank[a.id] ?? 9999) - (taskRank[b.id] ?? 9999);
+    });
+  }
+
+  function renderTracker(){
+    const jobs = orderedJobs().map(jobWithTask);
+    document.getElementById('trackerSub').textContent = jobs.length
+      ? `${jobs.length} opportunit${jobs.length === 1 ? 'y' : 'ies'} tracked, sorted by next action and deadline.`
+      : 'No opportunities tracked yet.';
+
+    // Build filter chips from the statuses actually present in the data.
+    const counts = {};
+    jobs.forEach(j => { const s = (j.status||'unknown').toLowerCase(); counts[s] = (counts[s]||0) + 1; });
+    const filterRow = document.getElementById('filterRow');
+    let chipsHtml = `<button class="chip ${state.trackerFilter==='all'?'on':''}" data-filter="all" onclick="setFilter('all',this)">All · ${jobs.length}</button>`;
+    Object.keys(counts).forEach(status => {
+      const meta = STATUS_META[status] || { label: titleCase(status) };
+      chipsHtml += `<button class="chip ${state.trackerFilter===status?'on':''}" data-filter="${esc(status)}" onclick="setFilter('${esc(status)}',this)">${esc(meta.label)} · ${counts[status]}</button>`;
+    });
+    filterRow.innerHTML = chipsHtml;
+
+    const body = document.getElementById('trackerBody');
+    if(jobs.length === 0){
+      body.innerHTML = '';
+      document.getElementById('trackerEmpty').style.display = 'block';
+      document.getElementById('trackerEmpty').textContent = 'No opportunities tracked yet.';
+      return;
+    }
+
+    body.innerHTML = jobs.map(job => {
+      const statusKey = (job.status||'unknown').toLowerCase();
+      const statusMeta = STATUS_META[statusKey] || { label: titleCase(statusKey), cls: 'st-not' };
+      const prMeta = job.priority ? (PRIORITY_META[job.priority] || { cls: 'pr-low' }) : null;
+      const urgCls = urgencyClass(job);
+      const statusOptions = STATUS_ORDER.map(s => `<option value="${s}" ${statusKey===s?'selected':''}>${esc(STATUS_META[s].label)}</option>`).join('');
+      const company = cleanValue(job.company, 'Unknown company');
+      const title = cleanValue(job.title, 'Untitled opportunity');
+      const hasRealLink = jobHasRealApplyLink(job);
+      const isApplied = statusKey === 'applied';
+      return `
+        <tr class="job-row" data-status="${esc(statusKey)}" data-search="${esc((company+' '+title).toLowerCase())}">
+          <td class="company" title="${esc(company)}"><span class="cell-text">${esc(company)}</span></td>
+          <td class="role" title="${esc(title)}"><span class="cell-text">${esc(title)}</span></td>
+          <td>${prMeta ? `<span class="priority-badge ${prMeta.cls}">${esc(job.priority)}</span>` : '<span style="color:var(--muted);font-size:12px;">–</span>'}</td>
+          <td><div class="deadline"><span class="urg-dot ${urgCls}"></span>${renderDeadline(job)}</div></td>
+          <td onclick="event.stopPropagation();">
+            <select class="status-select ${statusMeta.cls}" onchange="changeJobStatus(${job.id}, this.value, false)" title="Change application status">${statusOptions}</select>
+          </td>
+          <td onclick="event.stopPropagation();">
+            <div class="row-actions">
+              ${detailsIconButton(job.id, 'icon-detail row-details')}
+              ${isApplied
+                ? `<span class="row-link row-done" title="Already marked applied">Applied</span>`
+                : hasRealLink
+                  ? `<a class="row-link row-apply" title="Open Handshake application" href="${esc(job.apply_url)}" target="_blank" rel="noopener" onclick="handleApplyClick(${job.id});">Apply</a>`
+                : `<span class="row-link row-apply-empty" title="No application link found yet">No link</span>`}
+            </div>
+          </td>
+        </tr>`;
+    }).join('');
+
+    applyTrackerSearch();
+  }
+
+  function setFilter(status, el){
+    state.trackerFilter = status;
+    document.querySelectorAll('#filterRow .chip').forEach(c => c.classList.remove('on'));
+    el.classList.add('on');
+    applyTrackerSearch();
+  }
+
+  function applyTrackerSearch(){
+    const q = (document.getElementById('trackerSearch').value || '').trim().toLowerCase();
+    let visible = 0;
+    document.querySelectorAll('#trackerBody tr.job-row').forEach(row => {
+      const matchesText = !q || row.dataset.search.includes(q);
+      const matchesFilter = state.trackerFilter === 'all' || row.dataset.status === state.trackerFilter;
+      const show = matchesText && matchesFilter;
+      row.style.display = show ? '' : 'none';
+      if(show) visible++;
+    });
+    const emptyEl = document.getElementById('trackerEmpty');
+    if(document.querySelectorAll('#trackerBody tr.job-row').length > 0){
+      emptyEl.style.display = visible === 0 ? 'block' : 'none';
+      emptyEl.textContent = 'No opportunities match this filter.';
+    }
+  }
+
+  function onSidePanelSearch(){
+    const val = document.getElementById('sidePanelSearch').value;
+    const trackerInput = document.getElementById('trackerSearch');
+    trackerInput.value = val;
+    applyTrackerSearch();
+  }
+
+  // ================= Job modal =================
+  function openJobModal(jobId){
+    const job = jobWithTask(state.jobs.find(j => j.id === jobId));
+    if(!job.id) return;
+    const statusKey = (job.status||'not_applied').toLowerCase();
+    const isEvent = job.message_type === 'event';
+    const hasRealLink = jobHasRealApplyLink(job);
+    const company = cleanValue(job.company, 'Unknown company');
+    const title = cleanValue(job.title, 'Untitled opportunity');
+    const location = cleanValue(job.location, 'Not specified');
+    const deadlineLabel = formatJobDeadline(job);
+    const statusOptions = STATUS_ORDER.map(s => `<option value="${s}" ${statusKey===s?'selected':''}>${esc(STATUS_META[s].label)}</option>`).join('');
+
+    document.getElementById('jobModalBody').innerHTML = `
+      <div class="modal-eyebrow">${esc(location)} · ${esc(deadlineLabel)}</div>
+      <div class="modal-title">${esc(title)}</div>
+      <div class="modal-company">${esc(company)}</div>
+
+      ${!isEvent ? `
+      <div class="modal-section">
+        <div class="modal-section-title">Apply</div>
+        <div class="modal-apply-row">
+          ${statusKey === 'applied'
+            ? `<span class="btn" style="background:var(--mint-soft);border-color:transparent;color:#1E6E5B;cursor:default;">Applied</span>${hasRealLink ? `<a class="btn" href="${esc(job.apply_url)}" target="_blank" rel="noopener">Open posting</a>` : ''}`
+            : hasRealLink
+              ? `<a class="btn btn-primary" href="${esc(job.apply_url)}" target="_blank" rel="noopener" onclick="handleApplyClick(${job.id})">Apply</a>`
+              : `<span class="btn" style="opacity:.55;cursor:default;" title="No application link found for this posting yet">No link found</span>`}
+          <select class="modal-status-select" onchange="changeJobStatus(${job.id}, this.value, false)" title="Change application status">${statusOptions}</select>
+        </div>
+        ${statusKey === 'applied'
+          ? '<div class="apply-hint">This opportunity is already marked applied. Use Open posting only if you need to revisit the listing.</div>'
+          : hasRealLink
+            ? '<div class="apply-hint">Opens the listing in a new tab and marks this as Applied — use the dropdown if that is not right.</div>'
+            : '<div class="apply-hint">No application link was found for this posting yet. Find it yourself and update the status once you have applied.</div>'}
+      </div>` : ''}
+
+      <div class="modal-section">
+        <div class="modal-section-title">Job info</div>
+        <div class="detail-grid">
+          ${renderDetailField('Deadline', deadlineLabel)}
+          ${renderDetailField('Location', location)}
+          ${renderOptionalDetailField('Type', job.employment_type)}
+          ${renderOptionalDetailField('Pay', job.compensation)}
+          ${renderDetailField('Received', formatDateTime(job.received_at))}
+        </div>
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-section-title">About</div>
+        <div class="modal-desc">${esc(cleanJobDescription(job))}</div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Skills</div>
+        <div class="skill-chip-row">${(job.required_skills||[]).map(s => `<span class="skill-chip">${esc(s)}</span>`).join('') || '<span style="font-size:12px;color:var(--muted);">No skills found in this email.</span>'}</div>
+      </div>
+    `;
+    document.getElementById('jobModalBackdrop').classList.remove('hidden');
+  }
+  function closeJobModal(e){
+    if(e && e.target !== e.currentTarget && e.type === 'click' && e.currentTarget.id !== 'jobModalBackdrop') return;
+    document.getElementById('jobModalBackdrop').classList.add('hidden');
+  }
+  document.addEventListener('keydown', e => { if(e.key === 'Escape') closeJobModal({currentTarget:{id:'jobModalBackdrop'}, target:null}); });
+
+  // ================= Status changes / Easy Apply =================
+  function handleApplyClick(jobId){
+    // The <a> tag's own href/target already opens the listing in a new
+    // tab; this just fires the status-tracking side effect alongside it.
+    changeJobStatus(jobId, 'applied', true);
+  }
+
+  async function changeJobStatus(jobId, newStatus, isApplyAction){
+    const job = state.jobs.find(j => j.id === jobId);
+    if(!job) return;
+    const prevStatus = job.status;
+    if(prevStatus === newStatus) return;
+
+    // Optimistic update so the UI feels instant.
+    job.status = newStatus;
+    renderTracker();
+    renderProfile();
+    renderDigest();
+    renderNotifications();
+    renderActivity();
+
+    try{
+      const path = isApplyAction ? `/jobs/${jobId}/apply` : `/jobs/${jobId}`;
+      const res = isApplyAction
+        ? await apiPost(path, {})
+        : await apiPatch(path, { status: newStatus });
+      Object.assign(job, res.job);
+
+      // Status changes shift the priority engine's ranking (e.g. Applied
+      // becomes Follow Up), so pull fresh /tasks/ rather than guessing.
+      await refreshTasksOnly();
+
+      const modalOpen = !document.getElementById('jobModalBackdrop').classList.contains('hidden');
+      if(modalOpen) openJobModal(jobId);
+
+      const label = STATUS_META[job.status] ? STATUS_META[job.status].label : job.status;
+      showToast(
+        isApplyAction ? 'Marked as applied' : `Status set to ${label}`,
+        false,
+        prevStatus !== job.status ? () => changeJobStatus(jobId, prevStatus, false) : null
+      );
+    }catch(e){
+      // Roll back the optimistic update.
+      job.status = prevStatus;
+      renderTracker();
+      renderProfile();
+      renderDigest();
+      renderNotifications();
+      renderActivity();
+      showToast('Could not update status — ' + (e.message || 'network error'), true);
+    }
+  }
+
+  async function refreshTasksOnly(){
+    try{
+      const [tasksRes, goalsRes] = await Promise.all([
+        apiGet('/tasks/'),
+        apiGet('/profile/goals'),
+      ]);
+      state.tasks = tasksRes.tasks || [];
+      state.tasksByJobId = {};
+      state.tasks.forEach(t => { state.tasksByJobId[t.job_id] = t; });
+      state.goals = goalsRes.goals || state.goals;
+      state.progress = goalsRes.progress || state.progress;
+      renderTracker();
+      renderHome();
+      renderProfile();
+      renderDigest();
+      renderNotifications();
+      renderActivity();
+    }catch(e){
+      // Non-fatal: the optimistic local state stays as the source of truth.
+      console.error('Failed to refresh tasks after status change', e);
+    }
+  }
+
+  // ================= Weekly digest =================
+  function renderDigest(){
+    const top3 = state.tasks.slice(0, 3);
+    document.getElementById('digestSub').textContent = state.resume ? ('For ' + state.resume.name) : 'Updated from your job tracker';
+    const host = document.getElementById('digestList');
+    if(top3.length === 0){
+      host.innerHTML = '<div class="activity-empty">No priority tasks yet.</div>';
+      return;
+    }
+    host.innerHTML = top3.map((t, i) => {
+      const job = state.jobs.find(j => j.id === t.job_id);
+      const thumbCls = ['th-1','th-2','th-3','th-4'][i % 4];
+      const label = job ? initials(job.company) : '?';
+      const company = job ? cleanValue(job.company, 'Unknown company') : cleanValue(t.task_title, 'Opportunity');
+      return `
+        <div class="list-item" onclick="openJobModal(${t.job_id})">
+          <div class="list-thumb ${thumbCls}">${esc(label)}</div>
+          <div class="list-body"><div class="list-title">${esc(company)}</div><div class="list-desc">${esc(digestJobSummary(job))}</div></div>
+          <div class="list-actions">${detailsIconButton(t.job_id, 'detail-card')}</div>
+        </div>`;
+    }).join('');
+  }
+
+  // ================= Notifications =================
+  function renderNotifications(){
+    const top = state.tasks.slice(0, 6);
+    const host = document.getElementById('notificationsList');
+    if(top.length === 0){
+      host.innerHTML = '<div class="activity-empty">Nothing to show yet — load some jobs first.</div>';
+      return;
+    }
+    host.innerHTML = top.map((t, i) => {
+      const job = state.jobs.find(j => j.id === t.job_id);
+      const thumbCls = ['th-1','th-2','th-3','th-4'][i % 4];
+      const label = job ? initials(job.company) : '?';
+      return `
+        <div class="list-item" onclick="openJobModal(${t.job_id})">
+          <div class="list-thumb ${thumbCls}">${esc(label)}</div>
+          <div class="list-body"><div class="list-title">${esc(t.task_title)}</div><div class="list-desc">${esc(t.suggested_action)}</div></div>
+          <div class="list-actions">
+            <div class="list-time">${esc(t.priority)}</div>
+            ${detailsIconButton(t.job_id, 'detail-card')}
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  // ================= Right panel activity =================
+  function renderActivity(){
+    const nonRejected = state.jobs.filter(job => (job.status || '').toLowerCase() !== 'rejected');
+    const active = nonRejected.filter(job => (job.status || '').toLowerCase() !== 'applied');
+    const sourceJobs = active.length ? active : nonRejected;
+    const top = [...sourceJobs]
+      .sort((a, b) => daysUntilDeadline(a) - daysUntilDeadline(b))
+      .slice(0, 5)
+      .map(job => jobWithTask(job));
+    const host = document.getElementById('activityList');
+    if(top.length === 0){
+      host.innerHTML = '<div class="activity-empty">No upcoming deadlines yet.</div>';
+      return;
+    }
+    host.innerHTML = top.map((job, i) => {
+      const thumbCls = ['th-1','th-2','th-3','th-4'][i % 4];
+      const company = cleanValue(job.company, 'Unknown company');
+      const title = cleanValue(job.title, 'Untitled opportunity');
+      const label = initials(company);
+      return `
+        <div class="activity-item" onclick="openJobModal(${job.id})">
+          <div class="activity-thumb ${thumbCls}">${esc(label)}</div>
+          <div class="activity-body">
+            <div class="activity-title" title="${esc(company)}">${esc(company)}</div>
+            <div class="activity-desc" title="${esc(title)}">${esc(jobStatusLabel(job))} · ${esc(title)}</div>
+            <div class="activity-meta"><span class="activity-time">${esc(formatJobDeadline(job))}</span>${detailsIconButton(job.id, 'detail-card')}</div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  // ================= Chat =================
+  function seedChat(){
+    state.chat = [{ role: 'bot', text: "Hi! I'm grounded in your saved opportunities. Try one of the suggestions below, or ask your own question." }];
+    renderChatLog();
+  }
+  function startNewChat(){
+    state.chat = [];
+    seedChat();
+    showView('chat', document.querySelector('.nav-item[data-view=chat]'));
+  }
+  function renderChatSuggestions(){
+    document.getElementById('chatSuggestions').innerHTML = CHAT_SUGGESTIONS
+      .map(s => `<button class="suggestion-chip" onclick="sendChat('${esc(s).replace(/'/g,"&#39;")}')">${esc(s)}</button>`).join('');
+  }
+  function highlightCompanies(text){
+    let out = esc(text);
+    const companies = [...new Set(state.jobs.map(j => j.company))].filter(Boolean).sort((a,b) => b.length - a.length);
+    companies.forEach(c => {
+      const safe = esc(c);
+      out = out.split(safe).join(`<span class="cite">${safe}</span>`);
+    });
+    return out;
+  }
+  function renderStructuredBot(data){
+    if(!data || typeof data !== 'object') return highlightCompanies(String(data || ''));
+    const sections = (data.sections || []).map(section => `
+      <div>
+        <div class="chat-section-title">${esc(section.title)}</div>
+        <ul>${(section.items || []).map(item => `<li>${esc(item)}</li>`).join('')}</ul>
+      </div>`).join('');
+    const jobs = (data.jobs || []).map(job => `
+      <div class="chat-job-card">
+        <div class="chat-job-title">${esc(cleanValue(job.title, 'Untitled opportunity'))}</div>
+        <div class="chat-job-meta">${esc(cleanValue(job.company, 'Unknown company'))} · ${esc(job.priority || 'Priority')}</div>
+        <div style="font-size:12px;margin-bottom:8px;">${esc(job.suggested_action || job.reason || '')}</div>
+        <div class="chat-job-actions">
+          ${detailsIconButton(job.job_id, 'detail-card')}
+          ${job.has_real_apply_url && job.apply_url ? `<a class="chat-link" href="${esc(job.apply_url)}" target="_blank" rel="noopener" onclick="handleApplyClick(${job.job_id})">Apply</a>` : ''}
+        </div>
+      </div>`).join('');
+    const plan = (data.weekly_plan || []).map(day => `
+      <div class="chat-plan-day">
+        <div class="chat-plan-date">${esc(day.day_name)} · ${esc(day.display_date)}</div>
+        <div class="chat-plan-actions">${
+          (day.actions || []).length
+            ? day.actions.map(a => `<div class="plan-job-row"><span>${esc(a.company)} — ${esc(a.title)}</span>${detailsIconButton(a.job_id, 'detail-card')}</div>`).join('')
+            : 'No scheduled applications. Use this as a catch-up or tailoring day.'
+        }</div>
+      </div>`).join('');
+    return `
+      <div class="chat-card">
+        <div>${highlightCompanies(data.summary || '')}</div>
+        ${sections}
+        ${jobs ? `<div><div class="chat-section-title">Relevant jobs</div>${jobs}</div>` : ''}
+        ${plan ? `<div><div class="chat-section-title">Weekly plan</div>${plan}</div>` : ''}
+      </div>`;
+  }
+  function renderChatLog(){
+    const log = document.getElementById('chatLog');
+    log.innerHTML = state.chat.map(m => {
+      if(m.role === 'user') return `<div class="msg msg-user">${esc(m.text)}</div>`;
+      if(m.typing) return `<div class="msg msg-bot" id="typing-${m.id}"><span class="typing-dots"><span></span><span></span><span></span></span></div>`;
+      return `<div class="msg msg-bot${m.error?' error':''}">${m.structured ? renderStructuredBot(m.structured) : highlightCompanies(m.text)}</div>`;
+    }).join('');
+    log.scrollTop = log.scrollHeight;
+  }
+  function sendChatFromInput(){
+    const input = document.getElementById('chatInput');
+    const val = input.value.trim();
+    if(!val) return;
+    input.value = '';
+    sendChat(val);
+  }
+  async function sendChat(text){
+    state.chat.push({ role: 'user', text });
+    const typingId = Date.now();
+    state.chat.push({ role: 'bot', typing: true, id: typingId });
+    renderChatLog();
+    document.getElementById('chatSendBtn').disabled = true;
+    try{
+      const res = await apiPost('/chatbot/', { message: text });
+      const idx = state.chat.findIndex(m => m.id === typingId);
+      if(typeof res.assistant_response === 'object'){
+        state.chat[idx] = { role: 'bot', structured: res.assistant_response };
+      } else {
+        state.chat[idx] = { role: 'bot', text: res.assistant_response };
+      }
+    }catch(e){
+      const idx = state.chat.findIndex(m => m.id === typingId);
+      state.chat[idx] = { role: 'bot', text: "Couldn't reach Copilot — check that the backend is running at " + CONFIG.API_BASE + ".", error: true };
+    }
+    document.getElementById('chatSendBtn').disabled = false;
+    renderChatLog();
+  }
+
+  // ================= Boot =================
+  applyTheme(state.theme);
+  loadAll();
+</script>
+</body>
+</html>

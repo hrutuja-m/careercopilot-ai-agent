@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.DS_Store
+.vscode/
+*.docx
+CareerCopilot_AI_UI_Design_v2_Gradient*.html
+
+backend/.env
+backend/token_gmail.json
+backend/client_secret.json
+backend/database/*.json
+
+node_modules/
+dist/
+build/
