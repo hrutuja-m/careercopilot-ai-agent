@@ -1,16 +1,47 @@
+# Python
 __pycache__/
 *.py[cod]
+*$py.class
+*.so
+.Python
 .pytest_cache/
-.DS_Store
-.vscode/
-*.docx
-CareerCopilot_AI_UI_Design_v2_Gradient*.html
+.coverage
+.coverage.*
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.nox/
 
+# Environments and local config
+.env
+.envrc
+.venv/
+env/
+venv/
+ENV/
 backend/.env
+
+# CareerCopilot local/private data
 backend/token_gmail.json
 backend/client_secret.json
 backend/database/*.json
 
-node_modules/
-dist/
+# Build and package outputs
 build/
+dist/
+*.egg-info/
+wheels/
+MANIFEST
+
+# Editors and OS files
+.DS_Store
+.vscode/
+.idea/
+
+# Local artifacts not needed in the app repo
+*.docx
+CareerCopilot_AI_UI_Design_v2_Gradient*.html
+
+# Frontend dependencies/build outputs
+node_modules/
